@@ -38,8 +38,6 @@ public class Coordinates {
 
     @Override
     public int hashCode() {
-        int hash = x % 100;
-        hash += y % 100;
-        return hash;
+        return x.hashCode() + y.hashCode();
     }
 }
