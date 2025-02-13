@@ -27,7 +27,7 @@ public class LabWork implements Comparable<LabWork> {
     }
 
     public void update(String name, Coordinates coordinates, float minimalPoint, Difficulty difficulty,
-    Discipline discipline) {
+            Discipline discipline) {
         this.name = name;
         this.coordinates = coordinates;
         this.minimalPoint = minimalPoint;
@@ -101,6 +101,6 @@ public class LabWork implements Comparable<LabWork> {
 
     @Override
     public int compareTo(LabWork labWork) {
-        return ((Float)this.minimalPoint).compareTo((Float)labWork.getMinimalPoint());
+        return ((Float) this.minimalPoint).compareTo((Float) labWork.getMinimalPoint());
     }
 }
