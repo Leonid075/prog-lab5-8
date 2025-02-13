@@ -1,8 +1,8 @@
 package ru.p3xi.labwork;
 
-import java.time.*;
+import java.time.LocalDateTime;
 
-public class LabWork {
+public class LabWork implements Comparable<LabWork> {
     private static long ids = 0;
 
     private long id; // Значение поля должно быть больше 0, Значение этого поля должно быть
@@ -97,5 +97,10 @@ public class LabWork {
     public int hashCode() {
         return (int) id * (name.hashCode() + coordinates.hashCode() + creationDate.hashCode() + (int) minimalPoint
                 + difficulty.hashCode() + discipline.hashCode());
+    }
+
+    @Override
+    public int compareTo(LabWork labWork) {
+        return ((Float)this.minimalPoint).compareTo((Float)labWork.getMinimalPoint());
     }
 }
