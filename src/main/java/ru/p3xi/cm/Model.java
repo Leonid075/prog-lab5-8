@@ -1,6 +1,6 @@
+package ru.p3xi.cm;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.TreeSet;
 
 import ru.p3xi.labwork.*;
@@ -26,13 +26,13 @@ public class Model {
         return null;
     }
 
-    public boolean update(long id, String name, Coordinates coordinates, float minimalPoint, Difficulty difficulty,
-            Discipline discipline) {
+    public boolean update(long id, LabWork labWork) {
         Iterator<LabWork> iterator = labs.iterator();
         while (iterator.hasNext()) {
-            LabWork labWork = iterator.next();
-            if (labWork.getId() == id) {
-                labWork.update(name, coordinates, minimalPoint, difficulty, discipline);
+            LabWork labWorkNew = iterator.next();
+            if (labWorkNew.getId() == id) {
+                labWorkNew.update(labWork.getName(), labWork.getCoordinates(), labWork.getMinimalPoint(),
+                        labWork.getDifficulty(), labWork.getDiscipline());
                 return true;
             }
         }
@@ -72,27 +72,27 @@ public class Model {
     }
 
     // public float averageMinimalPoint() {
-    //     float average = 0;
-    //     for (LabWork labWork : labs) {
-    //         average += labWork.getMinimalPoint();
-    //     }
-    //     return average / labs.size();
+    // float average = 0;
+    // for (LabWork labWork : labs) {
+    // average += labWork.getMinimalPoint();
+    // }
+    // return average / labs.size();
     // }
 
     public boolean addIfMax(LabWork labWork) {
-        if(labs.higher(labWork) == null) {
+        if (labs.higher(labWork) == null) {
             labs.add(labWork);
             return true;
-        }
-        else return false;
+        } else
+            return false;
     }
 
     public boolean addIfMin(LabWork labWork) {
-        if(labs.lower(labWork) == null) {
+        if (labs.lower(labWork) == null) {
             labs.add(labWork);
             return true;
-        }
-        else return false;
+        } else
+            return false;
     }
 
     public ArrayList<LabWork> getAll() {
@@ -105,12 +105,12 @@ public class Model {
     }
 
     // public List<Discipline> getDisciplines() {
-    //     ArrayList<Discipline> disciplines = new ArrayList<>();
-    //     Iterator<LabWork> iterator = labs.iterator();
-    //     while (iterator.hasNext()) {
-    //         LabWork labWork = iterator.next();
-    //         disciplines.add(labWork.getDiscipline());
-    //     }
-    //     return disciplines.reversed();
+    // ArrayList<Discipline> disciplines = new ArrayList<>();
+    // Iterator<LabWork> iterator = labs.iterator();
+    // while (iterator.hasNext()) {
+    // LabWork labWork = iterator.next();
+    // disciplines.add(labWork.getDiscipline());
+    // }
+    // return disciplines.reversed();
     // }
 }
