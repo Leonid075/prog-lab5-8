@@ -71,13 +71,13 @@ public class Model {
         }
     }
 
-    public float averageMinimalPoint() {
-        float average = 0;
-        for (LabWork labWork : labs) {
-            average += labWork.getMinimalPoint();
-        }
-        return average / labs.size();
-    }
+    // public float averageMinimalPoint() {
+    //     float average = 0;
+    //     for (LabWork labWork : labs) {
+    //         average += labWork.getMinimalPoint();
+    //     }
+    //     return average / labs.size();
+    // }
 
     public boolean addIfMax(LabWork labWork) {
         if(labs.higher(labWork) == null) {
@@ -95,13 +95,22 @@ public class Model {
         else return false;
     }
 
-    public List<Discipline> getDisciplines() {
-        ArrayList<Discipline> disciplines = new ArrayList<>();
+    public ArrayList<LabWork> getAll() {
+        ArrayList<LabWork> all = new ArrayList<>();
         Iterator<LabWork> iterator = labs.iterator();
         while (iterator.hasNext()) {
-            LabWork labWork = iterator.next();
-            disciplines.add(labWork.getDiscipline());
+            all.add(iterator.next());
         }
-        return disciplines.reversed();
+        return all;
     }
+
+    // public List<Discipline> getDisciplines() {
+    //     ArrayList<Discipline> disciplines = new ArrayList<>();
+    //     Iterator<LabWork> iterator = labs.iterator();
+    //     while (iterator.hasNext()) {
+    //         LabWork labWork = iterator.next();
+    //         disciplines.add(labWork.getDiscipline());
+    //     }
+    //     return disciplines.reversed();
+    // }
 }
