@@ -1,0 +1,40 @@
+<Collection>
+    <CreationDate>2025-02-19T12:10:49.341956945</CreationDate>
+    <Type>class java.util.TreeSet<Type>
+    <LabWorks>
+        <LabWork>
+            <id>0</id>
+            <name>Name</name>
+            <coordinates>
+                <x>123</x>
+                <y>123.546</y>
+            </coordinates>
+            <creationDate>2025-02-19T20:10:49.341956945</creationDate>
+            <minimalPoint>100.1</minimalPoint>
+            <difficulty>EASY</difficulty>
+            <discipline>
+                <name>Prog</name>
+                <lectureHours>12.45</lectureHours>
+                <practiceHours>34.56</practiceHours>
+                <labsCount>32</labsCount>
+            </discipline>
+        </LabWork>
+        <!-- <LabWork>
+            <id></id>
+            <name></name>
+            <coordinates>
+                <x></x>
+                <y></y>
+            </coordinates>
+            <creationDate></creationDate>
+            <minimalPoint></minimalPoint>
+            <difficulty></difficulty>
+            <discipline>
+                <name></name>
+                <lectureHours></lectureHours>
+                <practiceHours></practiceHours>
+                <labsCount></labsCount>
+            </discipline>
+        </LabWork> -->
+    </LabWorks>
+</Collection>
