@@ -1,4 +1,5 @@
 package ru.p3xi.cm;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -7,9 +8,15 @@ import ru.p3xi.labwork.*;
 
 public class Model {
     private TreeSet<LabWork> labs;
+    private LocalDateTime creationDate;
 
     public Model() {
         labs = new TreeSet<LabWork>();
+        creationDate = LocalDateTime.now();
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
     }
 
     public void add(LabWork labWork) {
@@ -71,14 +78,6 @@ public class Model {
         }
     }
 
-    // public float averageMinimalPoint() {
-    // float average = 0;
-    // for (LabWork labWork : labs) {
-    // average += labWork.getMinimalPoint();
-    // }
-    // return average / labs.size();
-    // }
-
     public boolean addIfMax(LabWork labWork) {
         if (labs.higher(labWork) == null) {
             labs.add(labWork);
@@ -103,14 +102,4 @@ public class Model {
         }
         return all;
     }
-
-    // public List<Discipline> getDisciplines() {
-    // ArrayList<Discipline> disciplines = new ArrayList<>();
-    // Iterator<LabWork> iterator = labs.iterator();
-    // while (iterator.hasNext()) {
-    // LabWork labWork = iterator.next();
-    // disciplines.add(labWork.getDiscipline());
-    // }
-    // return disciplines.reversed();
-    // }
 }
