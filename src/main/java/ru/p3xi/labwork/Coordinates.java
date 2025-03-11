@@ -4,8 +4,20 @@ public class Coordinates {
     private Integer x; // Максимальное значение поля: 970, Поле не может быть null
     private Float y; // Максимальное значение поля: 721, Поле не может быть null
 
-    public Coordinates(Integer x, Float y) {
+    public Coordinates(Integer x, Float y) throws ValueException {
+        setX(x);
+        setY(y);
+    }
+
+    public void setX(Integer x) throws ValueException {
+        if (x == null) throw new ValueException("x не может быть null");
+        if (x > 970) throw new ValueException("x должен быть не больше 970");
         this.x = x;
+    }
+
+    public void setY(Float y) throws ValueException {
+        if (y == null) throw new ValueException("y не может быть null");
+        if (y > 721) throw new ValueException("y должен быть не больше 721");
         this.y = y;
     }
 
@@ -19,7 +31,7 @@ public class Coordinates {
 
     @Override
     public String toString() {
-        return x.toString() + "_" + y.toString();
+        return "Coords" + x.toString() + "_" + y.toString();
     }
 
     @Override

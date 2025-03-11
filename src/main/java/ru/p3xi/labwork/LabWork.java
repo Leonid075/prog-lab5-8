@@ -3,8 +3,6 @@ package ru.p3xi.labwork;
 import java.time.LocalDateTime;
 
 public class LabWork implements Comparable<LabWork> {
-    private static long ids = 0;
-
     private long id; // Значение поля должно быть больше 0, Значение этого поля должно быть
                      // уникальным, Значение этого поля должно генерироваться автоматически
     private String name; // Поле не может быть null, Строка не может быть пустой
@@ -16,22 +14,55 @@ public class LabWork implements Comparable<LabWork> {
     private Discipline discipline; // Поле может быть null
 
     public LabWork(String name, Coordinates coordinates, float minimalPoint, Difficulty difficulty,
-            Discipline discipline) {
-        this.id = ids++;
-        this.name = name;
-        this.coordinates = coordinates;
-        this.creationDate = LocalDateTime.now();
-        this.minimalPoint = minimalPoint;
-        this.difficulty = difficulty;
-        this.discipline = discipline;
+            Discipline discipline) throws ValueException {
+        setId(0);
+        setName(name);
+        setCoordinates(coordinates);
+        setCreationDate(LocalDateTime.now());
+        setMinimalPoint(minimalPoint);
+        setDifficulty(difficulty);
+        setDiscipline(discipline);
     }
 
-    public void update(String name, Coordinates coordinates, float minimalPoint, Difficulty difficulty,
-            Discipline discipline) {
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) throws ValueException {
+        if (name.equals(""))
+            throw new ValueException("Name не может быть пустым");
+        if (name.equals(null))
+            throw new ValueException("Name не может быть null");
         this.name = name;
+    }
+
+    public void setCoordinates(Coordinates coordinates) throws ValueException {
+        if (coordinates.equals(null))
+            throw new ValueException("coordinates не может быть null");
         this.coordinates = coordinates;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) throws ValueException {
+        if (creationDate.equals(null))
+            throw new ValueException("creationDate не может быть null");
+        this.creationDate = creationDate;
+    }
+
+    public void setMinimalPoint(float minimalPoint) throws ValueException {
+        if (minimalPoint <= 0)
+            throw new ValueException("minimalPoint должен быть больше 0");
         this.minimalPoint = minimalPoint;
+    }
+
+    public void setDifficulty(Difficulty difficulty) throws ValueException {
+        if (difficulty.equals(null))
+            throw new ValueException("difficulty не может быть null");
         this.difficulty = difficulty;
+    }
+
+    public void setDiscipline(Discipline discipline) throws ValueException {
+        if (discipline.equals(null))
+            throw new ValueException("discipline не может быть null");
         this.discipline = discipline;
     }
 

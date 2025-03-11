@@ -11,9 +11,9 @@ public class AvarageMinPointCommand extends Command {
     @Override
     public void execute(Model model, Object[] args) {
         float average = 0;
-        for (LabWork labWork : model.getAll()) {
+        for (LabWork labWork : model.getLabWorks()) {
             average += labWork.getMinimalPoint();
         }
-        ((Float)(average / model.getAll().size())).toString();
+        ((Float)(average / model.getLabWorks().size())).toString();
     }
 }

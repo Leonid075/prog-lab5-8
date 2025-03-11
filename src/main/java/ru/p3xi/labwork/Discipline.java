@@ -6,18 +6,30 @@ public class Discipline {
     private Long practiceHours; // Поле не может быть null
     private Integer labsCount; // Поле может быть null
 
-    public Discipline(String name, Long practiceHours, Integer labsCount) {
-        this.name = name;
-        this.practiceHours = practiceHours;
-        this.labsCount = labsCount;
-        this.lectureHours = 0;
+    public Discipline(String name, long lectureHours, Long practiceHours, Integer labsCount) throws ValueException {
+        setName(name);
+        setLectureHours(lectureHours);
+        setPracticeHours(practiceHours);
+        setLabsCount(labsCount);
     }
 
-    public Discipline(String name, long lectureHours, Long practiceHours, Integer labsCount) {
+    public void setName(String name) throws ValueException {
+        if(name == null) throw new ValueException("name не может быть null");
         this.name = name;
-        this.practiceHours = practiceHours;
-        this.labsCount = labsCount;
+    }
+
+    public void setLectureHours(long lectureHours) {
         this.lectureHours = lectureHours;
+    }
+
+    public void setPracticeHours(Long practiceHours) throws ValueException {
+        if(practiceHours == null) throw new ValueException("name не может быть null");
+        this.practiceHours = practiceHours;
+    }
+
+    public void setLabsCount(Integer labsCount) throws ValueException {
+        if(labsCount == null) throw new ValueException("name не может быть null");
+        this.labsCount = labsCount;
     }
 
     public String getName() {

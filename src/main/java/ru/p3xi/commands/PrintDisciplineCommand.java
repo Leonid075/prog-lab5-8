@@ -14,7 +14,7 @@ public class PrintDisciplineCommand extends Command {
     @Override
     public void execute(Model model, Object[] args) {
         ArrayList<Discipline> disciplines = new ArrayList<>();
-        Iterator<LabWork> iterator = model.getAll().iterator();
+        Iterator<LabWork> iterator = model.getLabWorks().iterator();
         while (iterator.hasNext()) {
             LabWork labWork = iterator.next();
             disciplines.add(labWork.getDiscipline());

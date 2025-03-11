@@ -15,11 +15,29 @@ public class Model {
         creationDate = LocalDateTime.now();
     }
 
+    public ArrayList<LabWork> getLabWorks() {
+        ArrayList<LabWork> all = new ArrayList<>();
+        Iterator<LabWork> iterator = labs.iterator();
+        while (iterator.hasNext()) {
+            all.add(iterator.next());
+        }
+        return all;
+    }
+
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
+    public void setLabWorks(ArrayList<LabWork> labWorks) {
+        labs = new TreeSet<LabWork>(labWorks);
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
     public void add(LabWork labWork) {
+        labWork.setId(0);
         labs.add(labWork);
     }
 
@@ -38,8 +56,14 @@ public class Model {
         while (iterator.hasNext()) {
             LabWork labWorkNew = iterator.next();
             if (labWorkNew.getId() == id) {
-                labWorkNew.update(labWork.getName(), labWork.getCoordinates(), labWork.getMinimalPoint(),
-                        labWork.getDifficulty(), labWork.getDiscipline());
+                try {
+                    labWorkNew.setName(labWork.getName());
+                    labWorkNew.setCoordinates(labWork.getCoordinates());
+                    labWorkNew.setMinimalPoint(labWork.getMinimalPoint());
+                    labWorkNew.setDifficulty(labWork.getDifficulty());
+                    labWorkNew.setDiscipline(labWork.getDiscipline());
+                }
+                catch (Exception e) {}
                 return true;
             }
         }
@@ -92,14 +116,5 @@ public class Model {
             return true;
         } else
             return false;
-    }
-
-    public ArrayList<LabWork> getAll() {
-        ArrayList<LabWork> all = new ArrayList<>();
-        Iterator<LabWork> iterator = labs.iterator();
-        while (iterator.hasNext()) {
-            all.add(iterator.next());
-        }
-        return all;
     }
 }
