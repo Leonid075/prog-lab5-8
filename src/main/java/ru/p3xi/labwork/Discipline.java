@@ -1,51 +1,16 @@
 package ru.p3xi.labwork;
 
-public class Discipline {
+public class Discipline extends DisciplineBuilder {
     private String name; // Поле не может быть null, Строка не может быть пустой
     private long lectureHours;
     private Long practiceHours; // Поле не может быть null
     private Integer labsCount; // Поле может быть null
 
-    public Discipline(String name, long lectureHours, Long practiceHours, Integer labsCount) throws ValueException {
-        setName(name);
-        setLectureHours(lectureHours);
-        setPracticeHours(practiceHours);
-        setLabsCount(labsCount);
-    }
-
-    public void setName(String name) throws ValueException {
-        if(name == null) throw new ValueException("name не может быть null");
-        this.name = name;
-    }
-
-    public void setLectureHours(long lectureHours) {
-        this.lectureHours = lectureHours;
-    }
-
-    public void setPracticeHours(Long practiceHours) throws ValueException {
-        if(practiceHours == null) throw new ValueException("name не может быть null");
-        this.practiceHours = practiceHours;
-    }
-
-    public void setLabsCount(Integer labsCount) throws ValueException {
-        if(labsCount == null) throw new ValueException("name не может быть null");
-        this.labsCount = labsCount;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public long getLectureHours() {
-        return lectureHours;
-    }
-
-    public Long getPracticeHours() {
-        return practiceHours;
-    }
-
-    public Integer getLabsCount() {
-        return labsCount;
+    public Discipline(DisciplineBuilder db) throws ValueException {
+        setName(db.getName());
+        setLectureHours(db.getLectureHours());
+        setPracticeHours(db.getPracticeHours());
+        setLabsCount(db.getLabsCount());
     }
 
     @Override
