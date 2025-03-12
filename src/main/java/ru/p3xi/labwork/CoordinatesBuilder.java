@@ -1,8 +1,8 @@
 package ru.p3xi.labwork;
 
 public class CoordinatesBuilder {
-    private Integer x; // Максимальное значение поля: 970, Поле не может быть null
-    private Float y; // Максимальное значение поля: 721, Поле не может быть null
+    protected Integer x; // Максимальное значение поля: 970, Поле не может быть null
+    protected Float y; // Максимальное значение поля: 721, Поле не может быть null
 
     public CoordinatesBuilder() {
     }

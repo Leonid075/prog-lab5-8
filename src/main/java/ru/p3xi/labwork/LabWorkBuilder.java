@@ -3,15 +3,15 @@ package ru.p3xi.labwork;
 import java.time.LocalDateTime;
 
 public class LabWorkBuilder {
-    private long id; // Значение поля должно быть больше 0, Значение этого поля должно быть
+    protected long id; // Значение поля должно быть больше 0, Значение этого поля должно быть
                      // уникальным, Значение этого поля должно генерироваться автоматически
-    private String name; // Поле не может быть null, Строка не может быть пустой
-    private Coordinates coordinates; // Поле не может быть null
-    private LocalDateTime creationDate; // Поле не может быть null, Значение этого поля должно генерироваться
+    protected String name; // Поле не может быть null, Строка не может быть пустой
+    protected Coordinates coordinates; // Поле не может быть null
+    protected LocalDateTime creationDate; // Поле не может быть null, Значение этого поля должно генерироваться
                                         // автоматически
-    private float minimalPoint; // Значение поля должно быть больше 0
-    private Difficulty difficulty; // Поле может быть null
-    private Discipline discipline; // Поле может быть null
+    protected float minimalPoint; // Значение поля должно быть больше 0
+    protected Difficulty difficulty; // Поле может быть null
+    protected Discipline discipline; // Поле может быть null
 
     public LabWorkBuilder() {
     }

@@ -1,10 +1,10 @@
 package ru.p3xi.labwork;
 
 public class Discipline extends DisciplineBuilder {
-    private String name; // Поле не может быть null, Строка не может быть пустой
-    private long lectureHours;
-    private Long practiceHours; // Поле не может быть null
-    private Integer labsCount; // Поле может быть null
+    // private String name; // Поле не может быть null, Строка не может быть пустой
+    // private long lectureHours;
+    // private Long practiceHours; // Поле не может быть null
+    // private Integer labsCount; // Поле может быть null
 
     public Discipline(DisciplineBuilder db) throws ValueException {
         setName(db.getName());

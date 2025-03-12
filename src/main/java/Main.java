@@ -14,7 +14,7 @@ public class Main {
     }
 
     public static void call() throws Exception {
-        LabWork labWork = new LabWork("123", new Coordinates(1, 1.2f), 0.1f, Difficulty.EASY, new Discipline("321", 321, (long) 3, 2));
+        LabWork labWork = new LabWork(new LabWorkBuilder());
         // Coordinates cords = ;
 
         ObjectMapper mapper = new ObjectMapper();

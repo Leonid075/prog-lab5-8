@@ -1,10 +1,10 @@
 package ru.p3xi.labwork;
 
 public class DisciplineBuilder {
-    private String name; // Поле не может быть null, Строка не может быть пустой
-    private long lectureHours;
-    private Long practiceHours; // Поле не может быть null
-    private Integer labsCount; // Поле может быть null
+    protected String name; // Поле не может быть null, Строка не может быть пустой
+    protected long lectureHours;
+    protected Long practiceHours; // Поле не может быть null
+    protected Integer labsCount; // Поле может быть null
 
     public DisciplineBuilder() {
     }
