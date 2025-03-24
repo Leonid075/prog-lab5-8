@@ -11,6 +11,9 @@ public class LabWork extends LabWorkBuilder implements Comparable<LabWork> {
     // private Difficulty difficulty; // Поле может быть null
     // private Discipline discipline; // Поле может быть null
 
+    public LabWork() {
+    }
+
     public LabWork(LabWorkBuilder lwb) throws ValueException {
         setId(lwb.getId());
         setName(lwb.getName());

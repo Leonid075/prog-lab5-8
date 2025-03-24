@@ -6,6 +6,9 @@ public class Discipline extends DisciplineBuilder {
     // private Long practiceHours; // Поле не может быть null
     // private Integer labsCount; // Поле может быть null
 
+    public Discipline() {
+    }
+
     public Discipline(DisciplineBuilder db) throws ValueException {
         setName(db.getName());
         setLectureHours(db.getLectureHours());
