@@ -17,6 +17,13 @@ public class ShowCommand extends Command {
 
     @Override
     public void execute(Model model, Object[] args) {
-        
+        if (model.getSize()==0) {
+            System.out.println("Коллекция пуста");
+            return;
+        }
+        System.out.println("Элементы коллекции:");
+        for (LabWork labWork : model.getLabWorks()) {
+            System.out.println(labWork.show());
+        }
     }
 }

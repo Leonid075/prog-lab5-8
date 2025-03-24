@@ -22,6 +22,7 @@ public class AvarageMinPointCommand extends Command {
         for (LabWork labWork : model.getLabWorks()) {
             average += labWork.getMinimalPoint();
         }
-        System.out.println("Среднее занчение minimalPoint всех элементов" + ((Float) (average / model.getLabWorks().size())).toString());
+        if (model.getSize() == 0) System.out.println("Коллекция пустая");
+        else System.out.println("Среднее занчение minimalPoint всех элементов" + ((Float) (average / model.getSize())).toString());
     }
 }

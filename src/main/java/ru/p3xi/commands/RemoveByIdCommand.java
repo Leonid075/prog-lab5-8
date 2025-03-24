@@ -38,6 +38,6 @@ public class RemoveByIdCommand extends Command {
             throw new ArgsException("Неверные аргументы команды " + getName());
         }
         model.remove(id);
-        System.out.println("Удален объект со значеним id "+id);
+        System.out.println("Удален объект со значеним id "+id+" (если он существовал)");
     }
 }

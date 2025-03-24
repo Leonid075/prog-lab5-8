@@ -19,6 +19,10 @@ public class PrintDisciplineCommand extends Command {
 
     @Override
     public void execute(Model model, Object[] args) {
+        if (model.getSize() == 0) {
+            System.out.println("коллекция пуста");
+            return;
+        }
         ArrayList<Discipline> disciplines = new ArrayList<>();
         Iterator<LabWork> iterator = model.getLabWorks().iterator();
         while (iterator.hasNext()) {

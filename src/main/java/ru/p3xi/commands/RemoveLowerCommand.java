@@ -32,6 +32,6 @@ public class RemoveLowerCommand extends Command {
             throw new ArgsException("Неверные аргументы команды " + getName());
         }
         model.removeLower(labWork);
-        System.out.println("Удалены объекты меньше заданого");
+        System.out.println("Удалены объекты меньше заданого (если они существовали)");
     }
 }

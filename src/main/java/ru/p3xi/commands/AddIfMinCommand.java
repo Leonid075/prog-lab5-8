@@ -31,7 +31,8 @@ public class AddIfMinCommand extends Command {
         } catch (Exception e) {
             throw new ArgsException("Неверные аргументы команды " + getName());
         }
-        model.addIfMin(labWork);
-        System.out.println("Объект добавлен в коллекцию");
+        boolean res = model.addIfMin(labWork);
+        if (res) System.out.println("Объект добавлен в коллекцию");
+        else System.out.println("Объект не добавлен в коллекцию");
     }
 }
