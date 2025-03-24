@@ -1,4 +1,9 @@
 package ru.p3xi.cm;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,9 +11,16 @@ import java.util.TreeSet;
 
 import ru.p3xi.labwork.*;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Model {
     private TreeSet<LabWork> labs;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime creationDate;
+    private long id;
 
     public Model() {
         labs = new TreeSet<LabWork>();
@@ -36,8 +48,20 @@ public class Model {
         this.creationDate = creationDate;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id++;
+    }
+
+    public int getSize() {
+        return labs.size();
+    }
+
     public void add(LabWork labWork) {
-        labWork.setId(0);
+        labWork.setId(getId());
         labs.add(labWork);
     }
 
@@ -51,7 +75,7 @@ public class Model {
         return null;
     }
 
-    public boolean update(long id, LabWork labWork) {
+    public boolean update(long id, LabWorkBuilder labWork) {
         Iterator<LabWork> iterator = labs.iterator();
         while (iterator.hasNext()) {
             LabWork labWorkNew = iterator.next();
@@ -116,5 +140,59 @@ public class Model {
             return true;
         } else
             return false;
+    }
+
+    public void save(String filename) {
+        FileWriter fw;
+        String fileContent;
+
+        try {
+            XmlMapper mapper = new XmlMapper();
+            mapper.findAndRegisterModules();
+            fileContent = mapper.writeValueAsString(this);
+            System.out.println(fileContent);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return;
+        }
+        try {
+            fw = new FileWriter(filename, false);
+            fw.write(fileContent);
+            fw.flush();
+        }
+        catch (IOException e) {
+            System.out.println(e);
+            return;
+        }
+    }
+
+    public static Model load(String filename) {
+        FileInputStream obj;
+        String fileContent;
+        try {
+            obj = new FileInputStream(filename);
+        }
+        catch (FileNotFoundException e) {
+            System.out.println(e);
+            return new Model();
+        }
+        try {
+            fileContent = new String(new BufferedInputStream(obj).readAllBytes());
+            System.out.println(fileContent);
+        }
+        catch (IOException e) {
+            System.out.println(e);
+            return new Model();
+        }
+        try {
+            XmlMapper mapper = new XmlMapper();
+            mapper.findAndRegisterModules();
+            return mapper.readValue(fileContent, Model.class);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return new Model();
+        }
     }
 }
