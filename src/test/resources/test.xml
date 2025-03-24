@@ -1,40 +1,40 @@
-<Collection>
-    <CreationDate>2025-02-19T12:10:49.341956945</CreationDate>
-    <Type>class java.util.TreeSet<Type>
-    <LabWorks>
-        <LabWork>
+<Model xmlns="">
+    <creationDate>2025-03-24 08:48</creationDate>
+    <id>2</id>
+    <labWorks>
+        <labWorks>
             <id>0</id>
-            <name>Name</name>
+            <name>psg</name>
             <coordinates>
-                <x>123</x>
-                <y>123.546</y>
+                <x>100</x>
+                <y>100.0</y>
             </coordinates>
-            <creationDate>2025-02-19T20:10:49.341956945</creationDate>
-            <minimalPoint>100.1</minimalPoint>
+            <creationDate>2025-03-24 08:48</creationDate>
+            <minimalPoint>100.0</minimalPoint>
             <difficulty>EASY</difficulty>
             <discipline>
-                <name>Prog</name>
-                <lectureHours>12.45</lectureHours>
-                <practiceHours>34.56</practiceHours>
-                <labsCount>32</labsCount>
+                <name>prog</name>
+                <lectureHours>4</lectureHours>
+                <practiceHours>4</practiceHours>
+                <labsCount>4</labsCount>
             </discipline>
-        </LabWork>
-        <!-- <LabWork>
-            <id></id>
-            <name></name>
+        </labWorks>
+        <labWorks>
+            <id>1</id>
+            <name>gsp</name>
             <coordinates>
-                <x></x>
-                <y></y>
+                <x>200</x>
+                <y>200.0</y>
             </coordinates>
-            <creationDate></creationDate>
-            <minimalPoint></minimalPoint>
-            <difficulty></difficulty>
+            <creationDate>2025-03-24 08:49</creationDate>
+            <minimalPoint>200.0</minimalPoint>
+            <difficulty>EASY</difficulty>
             <discipline>
-                <name></name>
-                <lectureHours></lectureHours>
-                <practiceHours></practiceHours>
-                <labsCount></labsCount>
+                <name>prog</name>
+                <lectureHours>5</lectureHours>
+                <practiceHours>5</practiceHours>
+                <labsCount>5</labsCount>
             </discipline>
-        </LabWork> -->
-    </LabWorks>
-</Collection>
+        </labWorks>
+    </labWorks>
+</Model>
