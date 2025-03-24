@@ -1,11 +1,19 @@
 package ru.p3xi.commands;
 
+import java.io.Console;
+
 import ru.p3xi.cm.Model;
 import ru.p3xi.labwork.LabWork;
 
 public class AvarageMinPointCommand extends Command {
     public AvarageMinPointCommand() {
-        super("average_of_minimal_point", "Вывести среднее значение minimalPoint для всех элементов", "");
+        super("average_of_minimal_point", "Вывести среднее значение minimalPoint для всех элементов", new Object[] {},
+                "");
+    }
+
+    @Override
+    public Object[] fillArgs(Console con) {
+        return new Object[] {};
     }
 
     @Override
@@ -14,6 +22,6 @@ public class AvarageMinPointCommand extends Command {
         for (LabWork labWork : model.getLabWorks()) {
             average += labWork.getMinimalPoint();
         }
-        ((Float)(average / model.getLabWorks().size())).toString();
+        System.out.println("Среднее занчение minimalPoint всех элементов" + ((Float) (average / model.getLabWorks().size())).toString());
     }
 }
