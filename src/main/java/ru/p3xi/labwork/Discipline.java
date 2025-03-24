@@ -1,6 +1,6 @@
 package ru.p3xi.labwork;
 
-public class Discipline extends DisciplineBuilder {
+public class Discipline extends DisciplineBuilder implements Showable {
     // private String name; // Поле не может быть null, Строка не может быть пустой
     // private long lectureHours;
     // private Long practiceHours; // Поле не может быть null
@@ -47,5 +47,13 @@ public class Discipline extends DisciplineBuilder {
         hash += practiceHours % 100;
         hash += labsCount % 100;
         return hash;
+    }
+
+    @Override
+    public String show() {
+        return ("| | Название дисциплины: "+getName()+"\n"+
+                "| | lectureHours: "+getLectureHours()+"\n"+
+                "| | practiceHours"+getPracticeHours()+"\n"+
+                "| | labsCount"+getLabsCount());
     }
 }

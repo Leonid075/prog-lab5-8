@@ -1,6 +1,6 @@
 package ru.p3xi.labwork;
 
-public class Coordinates extends CoordinatesBuilder {
+public class Coordinates extends CoordinatesBuilder implements Showable {
     // private Integer x; // Максимальное значение поля: 970, Поле не может быть null
     // private Float y; // Максимальное значение поля: 721, Поле не может быть null
 
@@ -34,5 +34,11 @@ public class Coordinates extends CoordinatesBuilder {
     @Override
     public int hashCode() {
         return x.hashCode() + y.hashCode();
+    }
+
+    @Override
+    public String show() {
+        return ("| | Координата x: "+getX()+"\n"+
+                "| | Координата y: "+getY());
     }
 }

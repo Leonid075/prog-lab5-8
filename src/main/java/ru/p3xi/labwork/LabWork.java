@@ -1,6 +1,6 @@
 package ru.p3xi.labwork;
 
-public class LabWork extends LabWorkBuilder implements Comparable<LabWork> {
+public class LabWork extends LabWorkBuilder implements Comparable<LabWork>, Showable {
     // private long id; // Значение поля должно быть больше 0, Значение этого поля должно быть
     //                  // уникальным, Значение этого поля должно генерироваться автоматически
     // private String name; // Поле не может быть null, Строка не может быть пустой
@@ -63,5 +63,17 @@ public class LabWork extends LabWorkBuilder implements Comparable<LabWork> {
     @Override
     public int compareTo(LabWork labWork) {
         return ((Float) this.minimalPoint).compareTo((Float) labWork.getMinimalPoint());
+    }
+
+    @Override
+    public String show() {
+        return ("Лабораторная работа:\n"+
+                "| Название: "+getName()+"\n"+
+                "| ID:" + getId()+"\n"+
+                "| Координаты:\n"+coordinates.show()+"\n"+
+                "| Дата создания: "+getCreationDate().toString()+"\n"+
+                "| minimalPoint: "+getMinimalPoint()+"\n"+
+                "| difficulty: "+getDifficulty().toString()+"\n"+
+                "| Дисциплина:\n"+discipline.show());
     }
 }
