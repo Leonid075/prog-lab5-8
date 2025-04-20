@@ -3,6 +3,7 @@ package ru.p3xi.commands;
 import java.io.Console;
 
 import ru.p3xi.cm.Model;
+import ru.p3xi.console.VirtualConsole;
 import ru.p3xi.labwork.*;
 
 public class RemoveByDiffCommand extends Command {
@@ -13,7 +14,7 @@ public class RemoveByDiffCommand extends Command {
     }
 
     @Override
-    public Object[] fillArgs(Console con) {
+    public Object[] fillArgs(VirtualConsole con) {
         Difficulty difficulty;
         while (true) {
             try {

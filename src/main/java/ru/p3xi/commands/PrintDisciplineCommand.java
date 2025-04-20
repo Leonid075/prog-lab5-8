@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import ru.p3xi.cm.Model;
+import ru.p3xi.console.VirtualConsole;
 import ru.p3xi.labwork.*;
 
 public class PrintDisciplineCommand extends Command {
@@ -13,7 +14,7 @@ public class PrintDisciplineCommand extends Command {
     }
 
     @Override
-    public Object[] fillArgs(Console con) {
+    public Object[] fillArgs(VirtualConsole con) {
         return new Object[] {};
     }
 

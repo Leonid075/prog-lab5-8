@@ -6,13 +6,13 @@ java_binary(
     name = "main",
     main_class = "Main",
     srcs = glob(["src/main/java/Main.java"]),
-    deps = [":labwork", ":jackson", ":cm", ":jackson-dataformat", ":commands",],
+    deps = [":labwork", ":jackson", ":cm", ":jackson-dataformat", ":commands", ":terminal"],
 )
 
 java_library(
     name = "labwork",
     srcs = glob(["src/main/java/ru/p3xi/labwork/*.java"]),
-    deps = [":jackson", ":jackson-annotations"],
+    deps = [":jackson", ":jackson-annotations", ":console",],
 )
 
 java_library(
@@ -22,9 +22,21 @@ java_library(
 )
 
 java_library(
+    name = "console",
+    srcs = glob(["src/main/java/ru/p3xi/console/*.java"]),
+    deps = [],
+)
+
+java_library(
+    name = "terminal",
+    srcs = glob(["src/main/java/ru/p3xi/terminal/*.java"]),
+    deps = [":labwork", ":cm", ":commands", ":console",],
+)
+
+java_library(
     name = "commands",
     srcs = glob(["src/main/java/ru/p3xi/commands/*.java"]),
-    deps = [":labwork", ":cm", ":jackson", ":jackson-dataformat",],
+    deps = [":labwork", ":cm", ":jackson", ":jackson-dataformat", ":console",],
 )
 
 java_import(

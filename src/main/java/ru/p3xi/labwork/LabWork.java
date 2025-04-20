@@ -36,20 +36,20 @@ public class LabWork extends LabWorkBuilder implements Comparable<LabWork>, Show
             return false;
         if (obj.getClass() != this.getClass())
             return false;
-        final LabWork discipline = (LabWork) obj;
-        if (getId() != this.id)
+        final LabWork labWork = (LabWork) obj;
+        if (labWork.getId() != this.id)
             return false;
-        if (!discipline.getName().equals(this.name))
+        if (!labWork.getName().equals(this.name))
             return false;
-        if (!discipline.getCoordinates().equals(this.coordinates))
+        if (!labWork.getCoordinates().equals(this.coordinates))
             return false;
-        if (!discipline.getCreationDate().equals(this.creationDate))
+        if (!labWork.getCreationDate().equals(this.creationDate))
             return false;
-        if (discipline.getMinimalPoint() != this.minimalPoint)
+        if (labWork.getMinimalPoint() != this.minimalPoint)
             return false;
-        if (!discipline.getDifficulty().equals(this.difficulty))
+        if (!labWork.getDifficulty().equals(this.difficulty))
             return false;
-        if (!discipline.getDiscipline().equals(this.discipline))
+        if (!labWork.getDiscipline().equals(this.discipline))
             return false;
         return true;
     }
@@ -62,7 +62,7 @@ public class LabWork extends LabWorkBuilder implements Comparable<LabWork>, Show
 
     @Override
     public int compareTo(LabWork labWork) {
-        return ((Float) this.minimalPoint).compareTo((Float) labWork.getMinimalPoint());
+        return ((Float) this.minimalPoint).compareTo((Float) labWork.getMinimalPoint() + 0.01f);
     }
 
     @Override

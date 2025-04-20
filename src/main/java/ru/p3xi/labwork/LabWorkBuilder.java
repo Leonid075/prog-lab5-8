@@ -4,6 +4,8 @@ import java.io.Console;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import ru.p3xi.console.VirtualConsole;
+
 public class LabWorkBuilder {
     protected long id; // Значение поля должно быть больше 0, Значение этого поля должно быть
                      // уникальным, Значение этого поля должно генерироваться автоматически
@@ -90,7 +92,7 @@ public class LabWorkBuilder {
         return discipline;
     }
 
-    public void buildInTerminal(Console con) {
+    public void buildInTerminal(VirtualConsole con) {
         Coordinates coordinates = new Coordinates();
         Float minimalPoint;
         Discipline discipline = new Discipline();

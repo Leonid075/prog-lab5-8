@@ -3,6 +3,7 @@ package ru.p3xi.commands;
 import java.io.Console;
 
 import ru.p3xi.cm.Model;
+import ru.p3xi.console.VirtualConsole;
 import ru.p3xi.labwork.LabWork;
 import ru.p3xi.labwork.LabWorkBuilder;
 
@@ -13,11 +14,11 @@ public class UpdateCommand extends Command {
     }
 
     @Override
-    public Object[] fillArgs(Console con) {
+    public Object[] fillArgs(VirtualConsole con) {
         Long id;
         while (true) {
             try {
-                String input = con.readLine("| | lectureHours: ");
+                String input = con.readLine();
                 if (input.equals(""))
                     id = 0l;
                 else

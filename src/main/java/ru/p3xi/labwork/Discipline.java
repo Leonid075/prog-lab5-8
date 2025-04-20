@@ -53,7 +53,7 @@ public class Discipline extends DisciplineBuilder implements Showable {
     public String show() {
         return ("| | Название дисциплины: "+getName()+"\n"+
                 "| | lectureHours: "+getLectureHours()+"\n"+
-                "| | practiceHours"+getPracticeHours()+"\n"+
-                "| | labsCount"+getLabsCount());
+                "| | practiceHours: "+getPracticeHours()+"\n"+
+                "| | labsCount: "+getLabsCount());
     }
 }

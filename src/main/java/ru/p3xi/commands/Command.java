@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import ru.p3xi.cm.Model;
+import ru.p3xi.console.VirtualConsole;
 
 public abstract class Command {
     private String name;
@@ -35,7 +36,7 @@ public abstract class Command {
         return argsDescription;
     }
 
-    public abstract Object[] fillArgs(Console con);
+    public abstract Object[] fillArgs(VirtualConsole con);
 
     public abstract void execute(Model model, Object[] args) throws ArgsException;
 }

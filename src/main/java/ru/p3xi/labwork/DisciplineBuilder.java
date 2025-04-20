@@ -2,6 +2,8 @@ package ru.p3xi.labwork;
 
 import java.io.Console;
 
+import ru.p3xi.console.VirtualConsole;
+
 public class DisciplineBuilder {
     protected String name; // Поле не может быть null, Строка не может быть пустой
     protected long lectureHours;
@@ -49,7 +51,7 @@ public class DisciplineBuilder {
         return labsCount;
     }
 
-    public void buildInTerminal(Console con) {
+    public void buildInTerminal(VirtualConsole con) {
         Long lectureHours;
         Long practiceHours;
         Integer labsCount;

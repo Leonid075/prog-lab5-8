@@ -2,6 +2,8 @@ package ru.p3xi.labwork;
 
 import java.io.Console;
 
+import ru.p3xi.console.VirtualConsole;
+
 public class CoordinatesBuilder {
     protected Integer x; // Максимальное значение поля: 970, Поле не может быть null
     protected Float y; // Максимальное значение поля: 721, Поле не может быть null
@@ -33,7 +35,7 @@ public class CoordinatesBuilder {
         return y;
     }
 
-    public void buildInTerminal(Console con) {
+    public void buildInTerminal(VirtualConsole con) {
         Integer x;
         Float y;
         System.out.println("| Введите координаты:");

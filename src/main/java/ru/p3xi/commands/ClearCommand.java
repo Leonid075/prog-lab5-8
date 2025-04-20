@@ -3,6 +3,7 @@ package ru.p3xi.commands;
 import java.io.Console;
 
 import ru.p3xi.cm.Model;
+import ru.p3xi.console.VirtualConsole;
 
 public class ClearCommand extends Command {
     public ClearCommand() {
@@ -10,7 +11,7 @@ public class ClearCommand extends Command {
     }
 
     @Override
-    public Object[] fillArgs(Console con) {
+    public Object[] fillArgs(VirtualConsole con) {
         return new Object[] {};
     }
 

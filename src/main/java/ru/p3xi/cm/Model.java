@@ -14,7 +14,9 @@ import ru.p3xi.labwork.*;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties({"size"})
 public class Model {
     private TreeSet<LabWork> labs;
 
@@ -29,9 +31,10 @@ public class Model {
 
     public ArrayList<LabWork> getLabWorks() {
         ArrayList<LabWork> all = new ArrayList<>();
-        Iterator<LabWork> iterator = labs.iterator();
-        while (iterator.hasNext()) {
-            all.add(iterator.next());
+        // Iterator<LabWork> iterator = labs.iterator();
+        // while (iterator.hasNext()) {
+        for (LabWork labWork : labs) {
+            all.add(labWork); //iterator.next());
         }
         return all;
     }
@@ -63,12 +66,12 @@ public class Model {
     public void add(LabWork labWork) {
         labWork.setId(getId());
         labs.add(labWork);
+        System.out.println(labWork.getId());
+        System.out.println(labs);
     }
 
     public LabWork getById(long id) {
-        Iterator<LabWork> iterator = labs.iterator();
-        while (iterator.hasNext()) {
-            LabWork labWork = iterator.next();
+        for (LabWork labWork : labs) {
             if (labWork.getId() == id)
                 return labWork;
         }
@@ -76,9 +79,7 @@ public class Model {
     }
 
     public boolean update(long id, LabWorkBuilder labWork) {
-        Iterator<LabWork> iterator = labs.iterator();
-        while (iterator.hasNext()) {
-            LabWork labWorkNew = iterator.next();
+        for (LabWork labWorkNew : labs) {
             if (labWorkNew.getId() == id) {
                 try {
                     labWorkNew.setName(labWork.getName());
@@ -95,9 +96,7 @@ public class Model {
     }
 
     public void remove(long id) {
-        Iterator<LabWork> iterator = labs.iterator();
-        while (iterator.hasNext()) {
-            LabWork labWork = iterator.next();
+        for (LabWork labWork : labs) {
             if (labWork.getId() == id) {
                 labs.remove(labWork);
                 return;
@@ -176,6 +175,10 @@ public class Model {
         catch (FileNotFoundException e) {
             System.out.println(e);
             return new Model();
+        }
+        catch (NullPointerException e) {
+            System.out.println("Переменая окружения 'lab5' не задана");
+            return null;
         }
         try {
             fileContent = new String(new BufferedInputStream(obj).readAllBytes());
