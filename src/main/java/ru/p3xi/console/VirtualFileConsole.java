@@ -11,16 +11,17 @@ public class VirtualFileConsole extends VirtualConsole {
     }
 
     @Override
-    public String readLine() {
+    public String readLine() throws FileEndException {
+        if (!lines.hasNext()) throw new FileEndException("FileEndException");
         return lines.next();
     }
 
     @Override
-    public String readLine(String input) {
+    public String readLine(String input) throws FileEndException {
         return readLine();
     }
     @Override
     public void writeLine(String input) {
-        
+        return;
     }
 }
