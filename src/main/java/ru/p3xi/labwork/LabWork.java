@@ -62,7 +62,7 @@ public class LabWork extends LabWorkBuilder implements Comparable<LabWork>, Show
 
     @Override
     public int compareTo(LabWork labWork) {
-        return ((Float) this.minimalPoint).compareTo((Float) labWork.getMinimalPoint() + 0.01f);
+        return this.toString().compareTo(labWork.toString());
     }
 
     @Override

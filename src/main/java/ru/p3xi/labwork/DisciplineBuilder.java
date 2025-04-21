@@ -1,7 +1,6 @@
 package ru.p3xi.labwork;
 
-import java.io.Console;
-
+import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 
 public class DisciplineBuilder {
@@ -51,11 +50,11 @@ public class DisciplineBuilder {
         return labsCount;
     }
 
-    public void buildInTerminal(VirtualConsole con) {
+    public void buildInTerminal(VirtualConsole con) throws FileEndException {
         Long lectureHours;
         Long practiceHours;
         Integer labsCount;
-        System.out.println("| Введите дисциплину:");
+        con.writeLine("| Введите дисциплину:");
         while (true) {
             try {
                 String input = con.readLine("| | name: ");

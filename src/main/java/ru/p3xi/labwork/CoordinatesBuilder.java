@@ -1,7 +1,6 @@
 package ru.p3xi.labwork;
 
-import java.io.Console;
-
+import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 
 public class CoordinatesBuilder {
@@ -35,10 +34,10 @@ public class CoordinatesBuilder {
         return y;
     }
 
-    public void buildInTerminal(VirtualConsole con) {
+    public void buildInTerminal(VirtualConsole con) throws FileEndException {
         Integer x;
         Float y;
-        System.out.println("| Введите координаты:");
+        con.writeLine("| Введите координаты:");
         while (true) {
             try {
                 String input = con.readLine("| | x (макс 970): ");

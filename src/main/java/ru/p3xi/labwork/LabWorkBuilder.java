@@ -4,17 +4,18 @@ import java.io.Console;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 
 public class LabWorkBuilder {
     protected long id; // Значение поля должно быть больше 0, Значение этого поля должно быть
-                     // уникальным, Значение этого поля должно генерироваться автоматически
+                       // уникальным, Значение этого поля должно генерироваться автоматически
     protected String name; // Поле не может быть null, Строка не может быть пустой
     protected Coordinates coordinates; // Поле не может быть null
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     protected LocalDateTime creationDate; // Поле не может быть null, Значение этого поля должно генерироваться
-                                        // автоматически
+                                          // автоматически
     protected float minimalPoint; // Значение поля должно быть больше 0
     protected Difficulty difficulty; // Поле может быть null
     protected Discipline discipline; // Поле может быть null
@@ -92,19 +93,19 @@ public class LabWorkBuilder {
         return discipline;
     }
 
-    public void buildInTerminal(VirtualConsole con) {
+    public void buildInTerminal(VirtualConsole con) throws FileEndException {
         Coordinates coordinates = new Coordinates();
         Float minimalPoint;
         Discipline discipline = new Discipline();
-        System.out.println("Введите лабораторную работу:");
+        con.writeLine("Введите лабораторную работу:");
         while (true) {
             try {
                 String input = con.readLine("| name: ");
-                if (input.equals("")) input=null;
+                if (input.equals(""))
+                    input = null;
                 setName(input);
                 break;
-            }
-            catch(NumberFormatException|ValueException e) {
+            } catch (NumberFormatException | ValueException e) {
                 System.out.println(e);
             }
         }
@@ -112,33 +113,33 @@ public class LabWorkBuilder {
         while (true) {
             try {
                 String input = con.readLine("| minimalPoint: ");
-                if (input.equals("")) minimalPoint=0f;
-                else minimalPoint = new Float(input);
+                if (input.equals(""))
+                    minimalPoint = 0f;
+                else
+                    minimalPoint = new Float(input);
                 setMinimalPoint(minimalPoint.floatValue());
                 break;
-            }
-            catch(NumberFormatException|ValueException e) {
+            } catch (NumberFormatException | ValueException e) {
                 System.out.println(e);
             }
         }
         while (true) {
             try {
                 String input = con.readLine("| difficulty: ");
-                if (input.equals("")) input=null;
+                if (input.equals(""))
+                    input = null;
                 setDifficulty(Difficulty.valueOf(input));
                 break;
-            }
-            catch(IllegalArgumentException|ValueException e) {
+            } catch (IllegalArgumentException | ValueException e) {
                 System.out.println(e);
             }
         }
         discipline.buildInTerminal(con);
-        try{
+        try {
             setCoordinates(coordinates);
             setCreationDate(LocalDateTime.now());
             setDiscipline(discipline);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
