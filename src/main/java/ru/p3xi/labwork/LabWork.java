@@ -1,5 +1,8 @@
 package ru.p3xi.labwork;
 
+/**
+ * Класс лабораторной работы
+ */
 public class LabWork extends LabWorkBuilder implements Comparable<LabWork>, Showable {
     // private long id; // Значение поля должно быть больше 0, Значение этого поля
     // должно быть

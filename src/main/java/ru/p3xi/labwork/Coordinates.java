@@ -1,5 +1,8 @@
 package ru.p3xi.labwork;
 
+/**
+ * Класс координат
+ */
 public class Coordinates extends CoordinatesBuilder implements Showable {
     // private Integer x; // Максимальное значение поля: 970, Поле не может быть
     // null

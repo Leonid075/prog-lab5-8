@@ -3,9 +3,14 @@ package ru.p3xi.labwork;
 import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 
+/**
+ * Класс builder класса Coordinates
+ */
 public class CoordinatesBuilder {
-    protected Integer x; // Максимальное значение поля: 970, Поле не может быть null
-    protected Float y; // Максимальное значение поля: 721, Поле не может быть null
+    /** Максимальное значение поля: 970, Поле не может быть null */
+    protected Integer x;
+    /** Максимальное значение поля: 721, Поле не может быть null */
+    protected Float y;
 
     public CoordinatesBuilder() {
     }
@@ -34,6 +39,11 @@ public class CoordinatesBuilder {
         return y;
     }
 
+    /**
+     * Заполнение элемента в консоли
+     * @param con
+     * @throws FileEndException
+     */
     public void buildInTerminal(VirtualConsole con) throws FileEndException {
         Integer x;
         Float y;

@@ -1,5 +1,8 @@
 package ru.p3xi.labwork;
 
+/**
+ * Класс предмета
+ */
 public class Discipline extends DisciplineBuilder implements Showable {
     // private String name; // Поле не может быть null, Строка не может быть пустой
     // private long lectureHours;

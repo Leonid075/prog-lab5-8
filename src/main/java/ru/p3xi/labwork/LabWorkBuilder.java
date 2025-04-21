@@ -7,18 +7,25 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 
+/**
+ * Класс builder класса LabWork
+ */
 public class LabWorkBuilder {
-    protected long id; // Значение поля должно быть больше 0, Значение этого поля должно быть
-                       // уникальным, Значение этого поля должно генерироваться автоматически
-    protected String name; // Поле не может быть null, Строка не может быть пустой
-    protected Coordinates coordinates; // Поле не может быть null
-
+    /** Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически */
+    protected long id;
+    /** Поле не может быть null, Строка не может быть пустой */
+    protected String name;
+    /** Поле не может быть null */
+    protected Coordinates coordinates;
+    /** Поле не может быть null, Значение этого поля должно генерироваться автоматически */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-    protected LocalDateTime creationDate; // Поле не может быть null, Значение этого поля должно генерироваться
-                                          // автоматически
-    protected float minimalPoint; // Значение поля должно быть больше 0
-    protected Difficulty difficulty; // Поле может быть null
-    protected Discipline discipline; // Поле может быть null
+    protected LocalDateTime creationDate;
+    /** Значение поля должно быть больше 0 */
+    protected float minimalPoint;
+    /** Поле может быть null */
+    protected Difficulty difficulty;
+    /** Поле может быть null */
+    protected Discipline discipline;
 
     public LabWorkBuilder() {
     }
@@ -93,6 +100,11 @@ public class LabWorkBuilder {
         return discipline;
     }
 
+    /**
+     * Заполнение элемента в консоли
+     * @param con
+     * @throws FileEndException
+     */
     public void buildInTerminal(VirtualConsole con) throws FileEndException {
         Coordinates coordinates = new Coordinates();
         Float minimalPoint;

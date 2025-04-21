@@ -3,11 +3,18 @@ package ru.p3xi.labwork;
 import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 
+/**
+ * Класс builder класса Discipline
+ */
 public class DisciplineBuilder {
-    protected String name; // Поле не может быть null, Строка не может быть пустой
+    /** Поле не может быть null, Строка не может быть пустой */
+    protected String name;
+    /** Нет ограничений */
     protected long lectureHours;
-    protected Long practiceHours; // Поле не может быть null
-    protected Integer labsCount; // Поле может быть null
+    /** Поле не может быть null */
+    protected Long practiceHours;
+    /** Поле не может быть null */
+    protected Integer labsCount;
 
     public DisciplineBuilder() {
     }
@@ -50,6 +57,11 @@ public class DisciplineBuilder {
         return labsCount;
     }
 
+    /**
+     * Заполнение элемента в консоли
+     * @param con
+     * @throws FileEndException
+     */
     public void buildInTerminal(VirtualConsole con) throws FileEndException {
         Long lectureHours;
         Long practiceHours;
