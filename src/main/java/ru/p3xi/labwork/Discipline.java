@@ -51,9 +51,9 @@ public class Discipline extends DisciplineBuilder implements Showable {
 
     @Override
     public String show() {
-        return ("| | Название дисциплины: "+getName()+"\n"+
-                "| | lectureHours: "+getLectureHours()+"\n"+
-                "| | practiceHours: "+getPracticeHours()+"\n"+
-                "| | labsCount: "+getLabsCount());
+        return ("| | Название дисциплины: " + getName() + "\n" +
+                "| | lectureHours: " + getLectureHours() + "\n" +
+                "| | practiceHours: " + getPracticeHours() + "\n" +
+                "| | labsCount: " + getLabsCount());
     }
 }

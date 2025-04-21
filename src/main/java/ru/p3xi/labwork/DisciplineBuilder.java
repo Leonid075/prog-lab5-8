@@ -58,47 +58,50 @@ public class DisciplineBuilder {
         while (true) {
             try {
                 String input = con.readLine("| | name: ");
-                if (input.equals("")) input=null;
+                if (input.equals(""))
+                    input = null;
                 setName(input);
                 break;
-            }
-            catch(NumberFormatException|ValueException e) {
+            } catch (NumberFormatException | ValueException e) {
                 System.out.println(e);
             }
         }
         while (true) {
             try {
                 String input = con.readLine("| | lectureHours: ");
-                if (input.equals("")) lectureHours=0l;
-                else lectureHours = new Long(input);
+                if (input.equals(""))
+                    lectureHours = 0l;
+                else
+                    lectureHours = new Long(input);
                 setLectureHours(lectureHours.longValue());
                 break;
-            }
-            catch(NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 System.out.println(e);
             }
         }
         while (true) {
             try {
                 String input = con.readLine("| | practiceHours: ");
-                if (input.equals("")) practiceHours=null;
-                else practiceHours = new Long(input);
+                if (input.equals(""))
+                    practiceHours = null;
+                else
+                    practiceHours = new Long(input);
                 setPracticeHours(practiceHours);
                 break;
-            }
-            catch(NumberFormatException|ValueException e) {
+            } catch (NumberFormatException | ValueException e) {
                 System.out.println(e);
             }
         }
         while (true) {
             try {
                 String input = con.readLine("| | labsCount: ");
-                if (input.equals("")) labsCount=null;
-                else labsCount = new Integer(input);
+                if (input.equals(""))
+                    labsCount = null;
+                else
+                    labsCount = new Integer(input);
                 setLabsCount(labsCount);
                 break;
-            }
-            catch(NumberFormatException|ValueException e) {
+            } catch (NumberFormatException | ValueException e) {
                 System.out.println(e);
             }
         }

@@ -41,24 +41,26 @@ public class CoordinatesBuilder {
         while (true) {
             try {
                 String input = con.readLine("| | x (макс 970): ");
-                if (input.equals("")) x=null;
-                else x = new Integer(input);
+                if (input.equals(""))
+                    x = null;
+                else
+                    x = new Integer(input);
                 setX(x);
                 break;
-            }
-            catch(NumberFormatException|ValueException e) {
+            } catch (NumberFormatException | ValueException e) {
                 System.out.println(e);
             }
         }
         while (true) {
             try {
                 String input = con.readLine("| | y (макс 721): ");
-                if (input.equals("")) y=null;
-                else y = new Float(input);
+                if (input.equals(""))
+                    y = null;
+                else
+                    y = new Float(input);
                 setY(y);
                 break;
-            }
-            catch(NumberFormatException|ValueException e) {
+            } catch (NumberFormatException | ValueException e) {
                 System.out.println(e);
             }
         }
