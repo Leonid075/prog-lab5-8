@@ -5,9 +5,13 @@ import java.io.Console;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 
 import ru.p3xi.cm.Model;
+import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
+import ru.p3xi.console.VirtualFileConsole;
+import ru.p3xi.terminal.Terminal;
 
 public class ExecuteScriptCommand extends Command {
     public ExecuteScriptCommand() {
@@ -15,7 +19,7 @@ public class ExecuteScriptCommand extends Command {
     }
 
     @Override
-    public Object[] fillArgs(VirtualConsole con) {
+    public Object[] fillArgs(VirtualConsole con) throws FileEndException {
         String input = con.readLine("Введите название файла:");
         return new Object[] {input};
     }
@@ -23,8 +27,10 @@ public class ExecuteScriptCommand extends Command {
     @Override
     public void execute(Model model, Object[] args) throws ArgsException {
         String filename;
+        HashMap<String, Command> commands;
         try {
             filename = (String) args[0];
+            commands = (HashMap<String, Command>) args[1];
         } catch (Exception e) {
             throw new ArgsException("Неверные аргументы команды " + getName());
         }
@@ -45,5 +51,14 @@ public class ExecuteScriptCommand extends Command {
             System.out.println(e);
             return;
         }
+
+        while (true) {
+            String[] args = new String[] { };
+            try {
+                args = con.readLine("> ").split(" ");
+            }
+            catch (FileEndException e) {return;}
+        // Terminal terminal = new Terminal(new Command[] {new AddCommand(), new AddIfMaxCommand(), new AddIfMinCommand(), new AvarageMinPointCommand(), new ClearCommand(), new InfoCommand(), new PrintDisciplineCommand(), new RemoveByDiffCommand(), new RemoveByIdCommand(), new RemoveByIdCommand(), new RemoveLowerCommand(), new SaveCommand(), new ShowCommand(), new UpdateCommand()});
+        terminal.execute(model, new VirtualFileConsole(fileContent));
     }
 }
