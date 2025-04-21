@@ -1,0 +1,12 @@
+add
+lab3
+130
+130
+100
+EASY
+prog
+10
+10
+10
+show
+execute_script /home/leon/docs/itmo/prog/prog-lab5-8/src/test/resources/script.txt
