@@ -12,7 +12,8 @@ public class VirtualFileConsole extends VirtualConsole {
 
     @Override
     public String readLine() throws FileEndException {
-        if (!lines.hasNext()) throw new FileEndException("FileEndException");
+        if (!lines.hasNext())
+            throw new FileEndException("FileEndException");
         return lines.next();
     }
 
@@ -20,6 +21,7 @@ public class VirtualFileConsole extends VirtualConsole {
     public String readLine(String input) throws FileEndException {
         return readLine();
     }
+
     @Override
     public void writeLine(String input) {
         return;

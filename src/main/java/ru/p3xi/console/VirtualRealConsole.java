@@ -4,6 +4,7 @@ import java.io.Console;
 
 public class VirtualRealConsole extends VirtualConsole {
     Console con;
+
     public VirtualRealConsole() {
         con = System.console();
     }
