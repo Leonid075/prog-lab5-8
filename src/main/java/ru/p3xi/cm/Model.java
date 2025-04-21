@@ -109,7 +109,8 @@ public class Model {
     }
 
     public void removeByDiff(Difficulty diff) {
-        for (LabWork labWork : labs) {
+        TreeSet<LabWork> labsIter = (TreeSet<LabWork>) labs.clone();
+        for (LabWork labWork : labsIter) {
             if (labWork.getDifficulty().equals(diff)) {
                 labs.remove(labWork);
             }
@@ -177,7 +178,7 @@ public class Model {
             return new Model();
         }
         catch (NullPointerException e) {
-            System.out.println("Переменая окружения 'lab5' не задана");
+            System.out.println("Файл не найден");
             return null;
         }
         try {
