@@ -1,4 +1,5 @@
 package ru.p3xi.cm;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,7 +17,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties({"size"})
+@JsonIgnoreProperties({ "size" })
 public class Model {
     private TreeSet<LabWork> labs;
 
@@ -34,7 +35,7 @@ public class Model {
         // Iterator<LabWork> iterator = labs.iterator();
         // while (iterator.hasNext()) {
         for (LabWork labWork : labs) {
-            all.add(labWork); //iterator.next());
+            all.add(labWork); // iterator.next());
         }
         return all;
     }
@@ -87,8 +88,8 @@ public class Model {
                     labWorkNew.setMinimalPoint(labWork.getMinimalPoint());
                     labWorkNew.setDifficulty(labWork.getDifficulty());
                     labWorkNew.setDiscipline(labWork.getDiscipline());
+                } catch (Exception e) {
                 }
-                catch (Exception e) {}
                 return true;
             }
         }
@@ -151,8 +152,7 @@ public class Model {
             mapper.findAndRegisterModules();
             fileContent = mapper.writeValueAsString(this);
             System.out.println(fileContent);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
             return;
         }
@@ -160,8 +160,7 @@ public class Model {
             fw = new FileWriter(filename, false);
             fw.write(fileContent);
             fw.flush();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println(e);
             return;
         }
@@ -172,20 +171,17 @@ public class Model {
         String fileContent;
         try {
             obj = new FileInputStream(filename);
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println(e);
             return new Model();
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             System.out.println("Файл не найден");
             return null;
         }
         try {
             fileContent = new String(new BufferedInputStream(obj).readAllBytes());
             System.out.println(fileContent);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println(e);
             return new Model();
         }
@@ -193,8 +189,7 @@ public class Model {
             XmlMapper mapper = new XmlMapper();
             mapper.findAndRegisterModules();
             return mapper.readValue(fileContent, Model.class);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
             return new Model();
         }
