@@ -3,6 +3,7 @@ package ru.p3xi.commands;
 import java.io.Console;
 
 import ru.p3xi.cm.Model;
+import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 import ru.p3xi.labwork.LabWork;
 import ru.p3xi.labwork.LabWorkBuilder;
@@ -14,7 +15,7 @@ public class AddIfMinCommand extends Command {
     }
 
     @Override
-    public Object[] fillArgs(VirtualConsole con) {
+    public Object[] fillArgs(VirtualConsole con) throws FileEndException {
         LabWorkBuilder labWorkBuilder = new LabWorkBuilder();
         labWorkBuilder.buildInTerminal(con);
         try {

@@ -3,6 +3,7 @@ package ru.p3xi.commands;
 import java.io.Console;
 
 import ru.p3xi.cm.Model;
+import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 
 public class SaveCommand extends Command {
@@ -11,7 +12,7 @@ public class SaveCommand extends Command {
     }
 
     @Override
-    public Object[] fillArgs(VirtualConsole con) {
+    public Object[] fillArgs(VirtualConsole con) throws FileEndException {
         return new Object[] {};
     }
 

@@ -3,6 +3,7 @@ package ru.p3xi.commands;
 import java.io.Console;
 
 import ru.p3xi.cm.Model;
+import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 import ru.p3xi.labwork.LabWork;
 import ru.p3xi.labwork.LabWorkBuilder;
@@ -13,28 +14,15 @@ public class RemoveByIdCommand extends Command {
     }
 
     @Override
-    public Object[] fillArgs(VirtualConsole con) {
-        Long id;
-        while (true) {
-            try {
-                String input = con.readLine("Введите id: ");
-                if (input.equals(""))
-                    id = 0l;
-                else
-                    id = new Long(input);
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println(e);
-            }
-        }
-        return new Object[] { id };
+    public Object[] fillArgs(VirtualConsole con) throws FileEndException {
+        return new Object[] { };
     }
 
     @Override
     public void execute(Model model, Object[] args) throws ArgsException {
         long id;
         try {
-            id = (long) args[0];
+            id = new Long((String) args[0]).longValue();
         } catch (Exception e) {
             throw new ArgsException("Неверные аргументы команды " + getName());
         }

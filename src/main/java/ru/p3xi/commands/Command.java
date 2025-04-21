@@ -1,10 +1,10 @@
 package ru.p3xi.commands;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import ru.p3xi.cm.Model;
+import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 
 public abstract class Command {
@@ -36,7 +36,7 @@ public abstract class Command {
         return argsDescription;
     }
 
-    public abstract Object[] fillArgs(VirtualConsole con);
+    public abstract Object[] fillArgs(VirtualConsole con) throws FileEndException;
 
     public abstract void execute(Model model, Object[] args) throws ArgsException;
 }
