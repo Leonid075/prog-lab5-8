@@ -17,12 +17,17 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Класс модели коллекции, служит оболкой над ней
+ */
 @JsonIgnoreProperties({ "size" })
 public class Model {
+    /** Коллекция лабораторных работ */
     private TreeSet<LabWork> labs;
-
+    /** Время создания */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime creationDate;
+    /** Поле для создание новых id */
     private long id;
 
     public Model() {
@@ -30,6 +35,10 @@ public class Model {
         creationDate = LocalDateTime.now();
     }
 
+    /**
+     * Получить все  лабораторные работы
+     * @return
+     */
     public ArrayList<LabWork> getLabWorks() {
         ArrayList<LabWork> all = new ArrayList<>();
         for (LabWork labWork : labs) {
@@ -62,11 +71,20 @@ public class Model {
         return labs.size();
     }
 
+    /**
+     * Добавить новую лабораторную работу
+     * @param labWork
+     */
     public void add(LabWork labWork) {
         labWork.setId(getId());
         labs.add(labWork);
     }
 
+    /**
+     * Получить лабораторную работу по id
+     * @param id
+     * @return
+     */
     public LabWork getById(long id) {
         for (LabWork labWork : labs) {
             if (labWork.getId() == id)
@@ -75,6 +93,12 @@ public class Model {
         return null;
     }
 
+    /**
+     * Обновить лабораторную работу по id
+     * @param id
+     * @param labWork
+     * @return
+     */
     public boolean update(long id, LabWorkBuilder labWork) {
         for (LabWork labWorkNew : labs) {
             if (labWorkNew.getId() == id) {
@@ -92,6 +116,10 @@ public class Model {
         return false;
     }
 
+    /**
+     * Удалить лабораторную работу по id
+     * @param id
+     */
     public void remove(long id) {
         for (LabWork labWork : labs) {
             if (labWork.getId() == id) {
@@ -101,10 +129,17 @@ public class Model {
         }
     }
 
+    /**
+     * Очистить коллекцию
+     */
     public void clear() {
         labs.clear();
     }
 
+    /**
+     * Удалить все лабораторные работы со сложностью diff
+     * @param diff
+     */
     public void removeByDiff(Difficulty diff) {
         TreeSet<LabWork> labsIter = (TreeSet<LabWork>) labs.clone();
         for (LabWork labWork : labsIter) {
@@ -114,6 +149,10 @@ public class Model {
         }
     }
 
+    /**
+     * Удалит все лабораторные работы, меньше данной
+     * @param exLabWork
+     */
     public void removeLower(LabWork exLabWork) {
         while (true) {
             LabWork labWork = labs.lower(exLabWork);
@@ -123,6 +162,11 @@ public class Model {
         }
     }
 
+    /**
+     * Добавить элемент в коллекцию, если он будет минимальным
+     * @param labWork
+     * @return
+     */
     public boolean addIfMax(LabWork labWork) {
         if (labs.higher(labWork) == null) {
             labs.add(labWork);
@@ -131,6 +175,11 @@ public class Model {
             return false;
     }
 
+    /**
+     * Добавить элемент в коллекцию, если он будет максимальным
+     * @param labWork
+     * @return
+     */
     public boolean addIfMin(LabWork labWork) {
         if (labs.lower(labWork) == null) {
             labs.add(labWork);
@@ -139,6 +188,10 @@ public class Model {
             return false;
     }
 
+    /**
+     * Сохранить коллекцию в файл
+     * @param filename
+     */
     public void save(String filename) {
         FileWriter fw;
         String fileContent;
@@ -161,6 +214,11 @@ public class Model {
         }
     }
 
+    /**
+     * Загрузить коллекцию из файла
+     * @param filename
+     * @return
+     */
     public static Model load(String filename) {
         FileInputStream obj;
         String fileContent;
