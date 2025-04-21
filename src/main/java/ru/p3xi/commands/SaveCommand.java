@@ -21,8 +21,7 @@ public class SaveCommand extends Command {
         String filename = System.getenv("lab5");
         if (filename == null) {
             System.out.println("Переменная окружения не задана");
-        }
-        else {
+        } else {
             model.save(filename);
             System.out.println("Коллекция сохранена");
         }

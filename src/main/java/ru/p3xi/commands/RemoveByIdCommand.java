@@ -15,7 +15,7 @@ public class RemoveByIdCommand extends Command {
 
     @Override
     public Object[] fillArgs(VirtualConsole con) throws FileEndException {
-        return new Object[] { };
+        return new Object[] {};
     }
 
     @Override
@@ -27,6 +27,6 @@ public class RemoveByIdCommand extends Command {
             throw new ArgsException("Неверные аргументы команды " + getName());
         }
         model.remove(id);
-        System.out.println("Удален объект со значеним id "+id+" (если он существовал)");
+        System.out.println("Удален объект со значеним id " + id + " (если он существовал)");
     }
 }

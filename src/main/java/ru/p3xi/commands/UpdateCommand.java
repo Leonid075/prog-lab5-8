@@ -34,6 +34,6 @@ public class UpdateCommand extends Command {
             throw new ArgsException("Неверные аргументы команды " + getName());
         }
         model.update(id, labWork);
-        System.out.println("Обновлено значение объекта с id "+id);
+        System.out.println("Обновлено значение объекта с id " + id);
     }
 }

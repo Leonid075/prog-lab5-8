@@ -35,7 +35,9 @@ public class AddIfMaxCommand extends Command {
             throw new ArgsException("Неверные аргументы команды " + getName());
         }
         boolean res = model.addIfMax(labWork);
-        if (res) System.out.println("Объект добавлен в коллекцию");
-        else System.out.println("Объект не добавлен в коллекцию");
+        if (res)
+            System.out.println("Объект добавлен в коллекцию");
+        else
+            System.out.println("Объект не добавлен в коллекцию");
     }
 }

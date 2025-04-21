@@ -19,7 +19,7 @@ public class ShowCommand extends Command {
 
     @Override
     public void execute(Model model, Object[] args) {
-        if (model.getSize()==0) {
+        if (model.getSize() == 0) {
             System.out.println("Коллекция пуста");
             return;
         }

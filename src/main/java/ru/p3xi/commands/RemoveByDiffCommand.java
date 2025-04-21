@@ -16,7 +16,7 @@ public class RemoveByDiffCommand extends Command {
 
     @Override
     public Object[] fillArgs(VirtualConsole con) throws FileEndException {
-        return new Object[] { };
+        return new Object[] {};
     }
 
     @Override
@@ -28,11 +28,10 @@ public class RemoveByDiffCommand extends Command {
             throw new ArgsException("Неверные аргументы команды " + getName());
         }
         try {
-        model.removeByDiff(difficulty);
-        }
-        catch (Exception e) {
+            model.removeByDiff(difficulty);
+        } catch (Exception e) {
             System.out.println(e);
         }
-        System.out.println("Удалены объекты со значеним difficulty "+difficulty.toString());
+        System.out.println("Удалены объекты со значеним difficulty " + difficulty.toString());
     }
 }

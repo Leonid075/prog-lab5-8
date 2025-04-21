@@ -11,7 +11,8 @@ import ru.p3xi.labwork.*;
 
 public class PrintDisciplineCommand extends Command {
     public PrintDisciplineCommand() {
-        super("print_field_descending_discipline", "Вывести значения discipline всех элементов в порядке убывания", new Object[] {}, "");
+        super("print_field_descending_discipline", "Вывести значения discipline всех элементов в порядке убывания",
+                new Object[] {}, "");
     }
 
     @Override
@@ -32,8 +33,9 @@ public class PrintDisciplineCommand extends Command {
             disciplines.add(labWork.getDiscipline());
         }
         System.out.println("Значения discipline всех элементов:");
-        for(Discipline discipline : disciplines) {
-            System.out.println(discipline.toString());;
+        for (Discipline discipline : disciplines) {
+            System.out.println(discipline.toString());
+            ;
         }
     }
 }
