@@ -1,46 +1,90 @@
 package ru.p3xi.terminal;
 
-import java.io.Console;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.stream.Stream;
 
 import ru.p3xi.cm.Model;
 import ru.p3xi.commands.*;
-import ru.p3xi.console.VirtualConsole;
 import ru.p3xi.console.*;
 
 public class Terminal {
     HashMap<String, Command> commands = new HashMap<>();
+
     public Terminal(Command... commands) {
         for (Command i : commands) {
             this.commands.put(i.getName(), i);
         }
     }
 
-    public void execute(Model model) {
-        VirtualConsole con = new VirtualRealConsole();
+    public void execute(Model model, VirtualConsole con) {
         while (true) {
-            String[] args = con.readLine("> ").split(" ");
-            if (args.length == 0) continue;
-            if(args[0].equals("help")) {
-                System.out.println("Доступные команды:");
-                for (Command i : commands.values()) {
-                    System.out.println(" "+i.getName()+" "+i.getArgsDescription()+" - "+i.getDescription());
-                }
-            }
-            else if(args[0].equals("quit") || args[0].equals("psg")) {
+            String[] args = new String[] {};
+            try {
+                args = con.readLine("> ").split(" ");
+            } catch (FileEndException e) {
                 return;
             }
-            else {
-                try {
-                    Command executed = commands.get(args[0]);
-                    if (executed == null) {
-                        System.out.println("Команды "+args[0]+" нет");
-                        System.out.println("Используйте help для получения списка доступных команд");
-                    }
-                    executed.execute(model, executed.fillArgs(con));
-                }
-                catch (Exception e) {
 
+            if (args.length == 0 || (args.length == 1 && args[0].equals("")))
+                continue;
+
+            if (args[0].equals("help")) {
+                System.out.println("Доступные команды:");
+                for (Command i : commands.values()) {
+                    System.out.println(" " + i.getName() + " " + i.getArgsDescription() + " - " + i.getDescription());
+                }
+            }
+
+            else if (args[0].equals("quit") || args[0].equals("exit") || args[0].equals("psg"))
+                return;
+
+            else if (args[0].equals("execute_script") && con.getClass().equals(new VirtualRealConsole().getClass())) {
+                String filename;
+                try {
+                    filename = (String) args[1];
+                } catch (Exception e) {
+                    System.out.println("Неверные аргументы команды execute_script");
+                    continue;
+                }
+                FileInputStream obj;
+                String fileContent;
+                try {
+                    obj = new FileInputStream(filename);
+                } catch (FileNotFoundException e) {
+                    System.out.println(e);
+                    return;
+                }
+                try {
+                    fileContent = new String(new BufferedInputStream(obj).readAllBytes());
+                    this.execute(model, new VirtualFileConsole(fileContent));
+                } catch (IOException e) {
+                    System.out.println(e);
+                    return;
+                }
+            }
+
+            else {
+                Command executed = commands.get(args[0]);
+                if (executed == null) {
+                    System.out.println("Команды " + args[0] + " нет");
+                    System.out.println("Используйте help для получения списка доступных команд");
+                }
+                try {
+                    if (args.length > 1) {
+                        executed.execute(model, Stream
+                                .concat(Arrays.stream(new Object[] { args[1] }), Arrays.stream(executed.fillArgs(con)))
+                                .toArray(Object[]::new));
+                    } else {
+                        executed.execute(model, executed.fillArgs(con));
+                    }
+                } catch (FileEndException | ArgsException e) {
+                    System.out.println(e);
+                } catch (Exception e) {
                 }
             }
         }
