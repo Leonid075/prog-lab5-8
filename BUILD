@@ -6,7 +6,7 @@ java_binary(
     name = "main",
     main_class = "Main",
     srcs = glob(["src/main/java/Main.java"]),
-    deps = [":labwork", ":jackson", ":cm", ":jackson-dataformat", ":commands", ":terminal"],
+    deps = [":labwork", ":jackson", ":cm", ":jackson-dataformat", ":commands", ":terminal", ":console",],
 )
 
 java_library(
