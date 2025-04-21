@@ -1,11 +1,12 @@
 package ru.p3xi.commands;
 
-import java.io.Console;
-
 import ru.p3xi.cm.Model;
 import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 
+/**
+ * Вывести информацию о коллекции
+ */
 public class InfoCommand extends Command {
     public InfoCommand() {
         super("info", "Вывести информацию о коллекции", new Object[] {}, "");

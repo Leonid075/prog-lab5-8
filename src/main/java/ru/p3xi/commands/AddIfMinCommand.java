@@ -1,13 +1,14 @@
 package ru.p3xi.commands;
 
-import java.io.Console;
-
 import ru.p3xi.cm.Model;
 import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 import ru.p3xi.labwork.LabWork;
 import ru.p3xi.labwork.LabWorkBuilder;
 
+/**
+ * Добавить элемент, если он будет минимальным в коллекции 
+ */
 public class AddIfMinCommand extends Command {
     public AddIfMinCommand() {
         super("add_if_min", "Добавить новый элемент в коллекцию, если его значение меньше, чем у наименьшего элемента",

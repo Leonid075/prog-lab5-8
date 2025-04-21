@@ -6,6 +6,9 @@ import ru.p3xi.console.VirtualConsole;
 import ru.p3xi.labwork.LabWork;
 import ru.p3xi.labwork.LabWorkBuilder;
 
+/**
+ * Создание нового элемента коллекции
+ */
 public class AddCommand extends Command {
     public AddCommand() {
         super("add", "Добавляет новый элемент в коллекцию", new Object[] { new LabWork() }, "{element}");

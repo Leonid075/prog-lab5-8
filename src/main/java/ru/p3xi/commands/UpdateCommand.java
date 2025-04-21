@@ -6,6 +6,9 @@ import ru.p3xi.console.VirtualConsole;
 import ru.p3xi.labwork.LabWork;
 import ru.p3xi.labwork.LabWorkBuilder;
 
+/**
+ * Обновление элемента коллекции по id
+ */
 public class UpdateCommand extends Command {
     public UpdateCommand() {
         super("update", "Обновить элемент в коллекции по id", new Object[] { new Long(1l), new LabWork() },

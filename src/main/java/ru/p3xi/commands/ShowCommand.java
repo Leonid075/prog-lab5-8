@@ -1,12 +1,13 @@
 package ru.p3xi.commands;
 
-import java.io.Console;
-
 import ru.p3xi.cm.Model;
 import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 import ru.p3xi.labwork.LabWork;
 
+/**
+ * Вывести элементы коллекции
+ */
 public class ShowCommand extends Command {
     public ShowCommand() {
         super("show", "Вывести все элементы коллекции", new Object[] {}, "");

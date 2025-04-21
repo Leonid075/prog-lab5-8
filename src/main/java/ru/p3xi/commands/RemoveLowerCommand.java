@@ -1,13 +1,14 @@
 package ru.p3xi.commands;
 
-import java.io.Console;
-
 import ru.p3xi.cm.Model;
 import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 import ru.p3xi.labwork.LabWork;
 import ru.p3xi.labwork.LabWorkBuilder;
 
+/**
+ * Удаляет эоементы, меньше заданного 
+ */
 public class RemoveLowerCommand extends Command {
     public RemoveLowerCommand() {
         super("remove_lower", "Удалить из коллекции все элементы, меньшие, чем заданный",

@@ -1,11 +1,12 @@
 package ru.p3xi.commands;
 
-import java.io.Console;
-
 import ru.p3xi.cm.Model;
 import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 
+/**
+ * Очистить коллекцию 
+ */
 public class ClearCommand extends Command {
     public ClearCommand() {
         super("clear", "Очистить коллекцию", new Object[] {}, "");

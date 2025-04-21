@@ -1,11 +1,12 @@
 package ru.p3xi.commands;
 
-import java.io.Console;
-
 import ru.p3xi.cm.Model;
 import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 
+/**
+ * Сохранить коллекию в файл 
+ */
 public class SaveCommand extends Command {
     public SaveCommand() {
         super("save", "Сохранить коллекию в файл", new Object[] {}, "");

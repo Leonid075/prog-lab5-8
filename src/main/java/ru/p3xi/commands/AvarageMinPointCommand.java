@@ -1,12 +1,13 @@
 package ru.p3xi.commands;
 
-import java.io.Console;
-
 import ru.p3xi.cm.Model;
 import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 import ru.p3xi.labwork.LabWork;
 
+/**
+ * Вывести среднее значение minimalPoint всех элементов коллекции
+ */
 public class AvarageMinPointCommand extends Command {
     public AvarageMinPointCommand() {
         super("average_of_minimal_point", "Вывести среднее значение minimalPoint для всех элементов", new Object[] {},

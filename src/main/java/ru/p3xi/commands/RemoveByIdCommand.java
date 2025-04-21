@@ -1,13 +1,12 @@
 package ru.p3xi.commands;
 
-import java.io.Console;
-
 import ru.p3xi.cm.Model;
 import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
-import ru.p3xi.labwork.LabWork;
-import ru.p3xi.labwork.LabWorkBuilder;
 
+/**
+ * Удаление элемента коллекции по id 
+ */
 public class RemoveByIdCommand extends Command {
     public RemoveByIdCommand() {
         super("remove_by_id", "Удалить элемент коллекции по id", new Object[] { new Long(1l) }, "id");

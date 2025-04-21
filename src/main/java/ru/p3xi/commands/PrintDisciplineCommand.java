@@ -1,6 +1,5 @@
 package ru.p3xi.commands;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -9,6 +8,9 @@ import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 import ru.p3xi.labwork.*;
 
+/**
+ * Вывести значения discipline всех элементов коллекции
+ */
 public class PrintDisciplineCommand extends Command {
     public PrintDisciplineCommand() {
         super("print_field_descending_discipline", "Вывести значения discipline всех элементов в порядке убывания",

@@ -1,12 +1,13 @@
 package ru.p3xi.commands;
 
-import java.io.Console;
-
 import ru.p3xi.cm.Model;
 import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 import ru.p3xi.labwork.*;
 
+/**
+ * Удалить элементы коллекции с заданной difficulty
+ */
 public class RemoveByDiffCommand extends Command {
     public RemoveByDiffCommand() {
         super("remove_all_by_difficulty",
