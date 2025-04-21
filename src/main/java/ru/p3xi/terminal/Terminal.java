@@ -12,7 +12,11 @@ import ru.p3xi.cm.Model;
 import ru.p3xi.commands.*;
 import ru.p3xi.console.*;
 
+/**
+ * Класс терминала, для обработки пользовательского ввода
+ */
 public class Terminal {
+    /** Словарь команд */
     HashMap<String, Command> commands = new HashMap<>();
 
     public Terminal(Command... commands) {
@@ -21,6 +25,11 @@ public class Terminal {
         }
     }
 
+    /**
+     * Запуск терминала
+     * @param model
+     * @param con
+     */
     public void execute(Model model, VirtualConsole con) {
         while (true) {
             String[] args = new String[] {};
