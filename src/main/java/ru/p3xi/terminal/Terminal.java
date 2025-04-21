@@ -44,6 +44,9 @@ public class Terminal {
 
             if (args[0].equals("help")) {
                 System.out.println("Доступные команды:");
+                if (con.getClass().equals(new VirtualRealConsole().getClass())) {
+                    System.out.println(" execute_script file_name - Исполнить скрипт из файла");
+                }
                 for (Command i : commands.values()) {
                     System.out.println(" " + i.getName() + " " + i.getArgsDescription() + " - " + i.getDescription());
                 }
@@ -52,7 +55,11 @@ public class Terminal {
             else if (args[0].equals("quit") || args[0].equals("exit") || args[0].equals("psg"))
                 return;
 
-            else if (args[0].equals("execute_script") && con.getClass().equals(new VirtualRealConsole().getClass())) {
+            else if (args[0].equals("execute_script")) {
+                if (!con.getClass().equals(new VirtualRealConsole().getClass())) {
+                    System.out.println("execute_script нельзя использовать в скриптах");
+                    continue;
+                }
                 String filename;
                 try {
                     filename = (String) args[1];

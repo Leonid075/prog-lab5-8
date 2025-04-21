@@ -225,7 +225,7 @@ public class Model {
         try {
             obj = new FileInputStream(filename);
         } catch (FileNotFoundException e) {
-            System.out.println(e);
+            System.out.println("Файл не найден, создана новая пустая коллекция");
             return new Model();
         } catch (NullPointerException e) {
             System.out.println("Файл не найден");
