@@ -3,6 +3,9 @@ package ru.p3xi.console;
 import java.util.Arrays;
 import java.util.Iterator;
 
+/**
+ * Класс виртуальной консоли файла- имитирует консоль
+ */
 public class VirtualFileConsole extends VirtualConsole {
     private Iterator<String> lines;
 

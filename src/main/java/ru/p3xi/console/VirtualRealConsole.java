@@ -2,6 +2,9 @@ package ru.p3xi.console;
 
 import java.io.Console;
 
+/**
+ * Класс виртуальной реальной консоли- оболочка над консолью
+ */
 public class VirtualRealConsole extends VirtualConsole {
     Console con;
 
