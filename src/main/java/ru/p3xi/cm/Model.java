@@ -32,10 +32,8 @@ public class Model {
 
     public ArrayList<LabWork> getLabWorks() {
         ArrayList<LabWork> all = new ArrayList<>();
-        // Iterator<LabWork> iterator = labs.iterator();
-        // while (iterator.hasNext()) {
         for (LabWork labWork : labs) {
-            all.add(labWork); // iterator.next());
+            all.add(labWork);
         }
         return all;
     }
@@ -67,8 +65,6 @@ public class Model {
     public void add(LabWork labWork) {
         labWork.setId(getId());
         labs.add(labWork);
-        System.out.println(labWork.getId());
-        System.out.println(labs);
     }
 
     public LabWork getById(long id) {
@@ -151,7 +147,6 @@ public class Model {
             XmlMapper mapper = new XmlMapper();
             mapper.findAndRegisterModules();
             fileContent = mapper.writeValueAsString(this);
-            System.out.println(fileContent);
         } catch (Exception e) {
             System.out.println(e);
             return;
@@ -180,7 +175,6 @@ public class Model {
         }
         try {
             fileContent = new String(new BufferedInputStream(obj).readAllBytes());
-            System.out.println(fileContent);
         } catch (IOException e) {
             System.out.println(e);
             return new Model();
@@ -190,7 +184,7 @@ public class Model {
             mapper.findAndRegisterModules();
             return mapper.readValue(fileContent, Model.class);
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("Не удалось правильно интрепретировать файл, используется новая коллекция");
             return new Model();
         }
     }
