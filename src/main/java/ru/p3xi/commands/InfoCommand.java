@@ -9,16 +9,22 @@ import ru.p3xi.console.VirtualConsole;
  */
 public class InfoCommand extends Command {
     public InfoCommand() {
-        super("info", "Вывести информацию о коллекции", new Object[] {}, "");
+        super("info", "Вывести информацию о коллекции", "");
     }
 
     @Override
-    public Object[] fillArgs(VirtualConsole con) throws FileEndException {
-        return new Object[] {};
+    public CommandRequest fillArgs(VirtualConsole con, String[] args) throws FileEndException {
+        try {
+            return new CommandRequest.Builder().command(args[0]).build();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
-    public void execute(Model model, Object[] args) {
+    public void execute(Model model, CommandRequest args) throws ArgsException {
+        if (args == null)
+            throw new ArgsException("Неверные аргументы команды " + getName());
         System.out.println("Информация о коллекции:");
         System.out.println("| Тип коллекции: " + model.getClass().toString());
         System.out.println("| Время инициализации: " + model.getCreationDate().toString());

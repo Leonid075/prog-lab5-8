@@ -7,34 +7,32 @@ import ru.p3xi.labwork.LabWork;
 import ru.p3xi.labwork.LabWorkBuilder;
 
 /**
- * Добавить элемент, если он будет минимальным в коллекции 
+ * Добавить элемент, если он будет минимальным в коллекции
  */
 public class AddIfMinCommand extends Command {
     public AddIfMinCommand() {
         super("add_if_min", "Добавить новый элемент в коллекцию, если его значение меньше, чем у наименьшего элемента",
-                new Object[] { new LabWork() }, "{element}");
+                "{element}");
     }
 
     @Override
-    public Object[] fillArgs(VirtualConsole con) throws FileEndException {
+    public CommandRequest fillArgs(VirtualConsole con, String[] args) throws FileEndException {
         LabWorkBuilder labWorkBuilder = new LabWorkBuilder();
         labWorkBuilder.buildInTerminal(con);
         try {
-            return new Object[] { new LabWork(labWorkBuilder) };
+            return new CommandRequest.Builder().command(args[0]).labWork(new LabWork(labWorkBuilder)).build();
         } catch (Exception e) {
-            return new Object[] {};
+            return null;
         }
     }
 
     @Override
-    public void execute(Model model, Object[] args) throws ArgsException {
-        LabWork labWork;
-        try {
-            labWork = (LabWork) args[0];
-        } catch (Exception e) {
+    public void execute(Model model, CommandRequest args) throws ArgsException {
+        if (args == null)
             throw new ArgsException("Неверные аргументы команды " + getName());
-        }
-        boolean res = model.addIfMin(labWork);
+        if (args.getLabWork() == null)
+            throw new ArgsException("Неверные аргументы команды " + getName());
+        boolean res = model.addIfMin(args.getLabWork());
         if (res)
             System.out.println("Объект добавлен в коллекцию");
         else

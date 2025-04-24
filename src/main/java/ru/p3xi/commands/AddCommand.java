@@ -11,29 +11,27 @@ import ru.p3xi.labwork.LabWorkBuilder;
  */
 public class AddCommand extends Command {
     public AddCommand() {
-        super("add", "Добавляет новый элемент в коллекцию", new Object[] { new LabWork() }, "{element}");
+        super("add", "Добавляет новый элемент в коллекцию", "{element}");
     }
 
     @Override
-    public Object[] fillArgs(VirtualConsole con) throws FileEndException {
+    public CommandRequest fillArgs(VirtualConsole con, String[] args) throws FileEndException {
         LabWorkBuilder labWorkBuilder = new LabWorkBuilder();
         labWorkBuilder.buildInTerminal(con);
         try {
-            return new Object[] { new LabWork(labWorkBuilder) };
+            return new CommandRequest.Builder().command(args[0]).labWork(new LabWork(labWorkBuilder)).build();
         } catch (Exception e) {
-            return new Object[] {};
+            return null;
         }
     }
 
     @Override
-    public void execute(Model model, Object[] args) throws ArgsException {
-        LabWork labWork;
-        try {
-            labWork = (LabWork) args[0];
-        } catch (Exception e) {
+    public void execute(Model model, CommandRequest args) throws ArgsException {
+        if (args == null)
             throw new ArgsException("Неверные аргументы команды " + getName());
-        }
-        model.add(labWork);
+        if (args.getLabWork() == null)
+            throw new ArgsException("Неверные аргументы команды " + getName());
+        model.add(args.getLabWork());
         System.out.println("Объект добавлен в коллекцию");
     }
 }

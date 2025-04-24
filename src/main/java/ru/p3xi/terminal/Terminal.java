@@ -4,9 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.stream.Stream;
 
 import ru.p3xi.cm.Model;
 import ru.p3xi.commands.*;
@@ -27,6 +25,7 @@ public class Terminal {
 
     /**
      * Запуск терминала
+     * 
      * @param model
      * @param con
      */
@@ -44,7 +43,7 @@ public class Terminal {
 
             if (args[0].equals("help")) {
                 System.out.println("Доступные команды:");
-                if (con.getClass().equals(new VirtualRealConsole().getClass())) {
+                if (con.getClass().equals(VirtualRealConsole.class)) {
                     System.out.println(" execute_script file_name - Исполнить скрипт из файла");
                 }
                 for (Command i : commands.values()) {
@@ -56,7 +55,7 @@ public class Terminal {
                 return;
 
             else if (args[0].equals("execute_script")) {
-                if (!con.getClass().equals(new VirtualRealConsole().getClass())) {
+                if (!con.getClass().equals(VirtualRealConsole.class)) {
                     System.out.println("execute_script нельзя использовать в скриптах");
                     continue;
                 }
@@ -91,13 +90,8 @@ public class Terminal {
                     System.out.println("Используйте help для получения списка доступных команд");
                 }
                 try {
-                    if (args.length > 1) {
-                        executed.execute(model, Stream
-                                .concat(Arrays.stream(new Object[] { args[1] }), Arrays.stream(executed.fillArgs(con)))
-                                .toArray(Object[]::new));
-                    } else {
-                        executed.execute(model, executed.fillArgs(con));
-                    }
+                    CommandRequest request = executed.fillArgs(con, args);
+                    executed.execute(model, request);
                 } catch (FileEndException | ArgsException e) {
                     System.out.println(e);
                 } catch (Exception e) {

@@ -11,32 +11,35 @@ import ru.p3xi.labwork.LabWorkBuilder;
  */
 public class UpdateCommand extends Command {
     public UpdateCommand() {
-        super("update", "Обновить элемент в коллекции по id", new Object[] { new Long(1l), new LabWork() },
-                "id, {element}");
+        super("update", "Обновить элемент в коллекции по id", "id, {element}");
     }
 
     @Override
-    public Object[] fillArgs(VirtualConsole con) throws FileEndException {
+    public CommandRequest fillArgs(VirtualConsole con, String[] args) throws FileEndException {
+        long id;
+        try {
+            id = Long.parseLong(args[1]);
+        } catch (NumberFormatException e) {
+            return null;
+        }
         LabWorkBuilder labWorkBuilder = new LabWorkBuilder();
         labWorkBuilder.buildInTerminal(con);
         try {
-            return new Object[] { new LabWork(labWorkBuilder) };
+            return new CommandRequest.Builder().command(args[0]).id(id).labWork(new LabWork(labWorkBuilder)).build();
         } catch (Exception e) {
-            return new Object[] { labWorkBuilder };
+            return null;
         }
     }
 
     @Override
-    public void execute(Model model, Object[] args) throws ArgsException {
-        long id;
-        LabWork labWork;
-        try {
-            id = new Long((String) args[0]).longValue();
-            labWork = (LabWork) args[1];
-        } catch (Exception e) {
+    public void execute(Model model, CommandRequest args) throws ArgsException {
+        if (args == null)
             throw new ArgsException("Неверные аргументы команды " + getName());
-        }
-        model.update(id, labWork);
-        System.out.println("Обновлено значение объекта с id " + id);
+        if (args.getId() == null)
+            throw new ArgsException("Неверные аргументы команды " + getName());
+        if (args.getLabWork() == null)
+            throw new ArgsException("Неверные аргументы команды " + getName());
+        model.update(args.getId(), args.getLabWork());
+        System.out.println("Обновлено значение объекта с id " + args.getId());
     }
 }

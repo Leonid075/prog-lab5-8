@@ -11,28 +11,32 @@ import ru.p3xi.labwork.*;
 public class RemoveByDiffCommand extends Command {
     public RemoveByDiffCommand() {
         super("remove_all_by_difficulty",
-                "Удалить из коллекции все элементы, значение difficulty которого эквивалентно заданному",
-                new Object[] { Difficulty.EASY }, "difficulty");
+                "Удалить из коллекции все элементы, значение difficulty которого эквивалентно заданному", "difficulty");
     }
 
     @Override
-    public Object[] fillArgs(VirtualConsole con) throws FileEndException {
-        return new Object[] {};
-    }
-
-    @Override
-    public void execute(Model model, Object[] args) throws ArgsException {
-        Difficulty difficulty;
+    public CommandRequest fillArgs(VirtualConsole con, String[] args) throws FileEndException {
         try {
-            difficulty = Difficulty.valueOf((String) args[0]);
+            return new CommandRequest.Builder().command(args[0]).difficulty(Difficulty.valueOf(args[1])).build();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Доступны занчения VERY_EASY, EASY, HOPELESS");
+            return null;
         } catch (Exception e) {
-            throw new ArgsException("Неверные аргументы команды " + getName());
+            return null;
         }
+    }
+
+    @Override
+    public void execute(Model model, CommandRequest args) throws ArgsException {
+        if (args == null)
+            throw new ArgsException("Неверные аргументы команды " + getName());
+        if (args.getDifficulty() == null)
+            throw new ArgsException("Неверные аргументы команды " + getName());
         try {
-            model.removeByDiff(difficulty);
+            model.removeByDiff(args.getDifficulty());
         } catch (Exception e) {
             System.out.println(e);
         }
-        System.out.println("Удалены объекты со значеним difficulty " + difficulty.toString());
+        System.out.println("Удалены объекты со значеним difficulty " + args.getDifficulty().toString());
     }
 }

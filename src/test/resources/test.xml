@@ -1,1 +1,57 @@
-<Model xmlns=""><creationDate>2025-03-24 08:48</creationDate><id>15</id><labWorks><labWorks><id>13</id><name>lab2</name><coordinates><x>100</x><y>100.0</y></coordinates><creationDate>2025-04-20 22:40</creationDate><minimalPoint>100.0</minimalPoint><difficulty>EASY</difficulty><discipline><name>rpog</name><lectureHours>120</lectureHours><practiceHours>120</practiceHours><labsCount>10</labsCount></discipline></labWorks><labWorks><id>14</id><name>lab2</name><coordinates><x>120</x><y>120.0</y></coordinates><creationDate>2025-04-20 22:57</creationDate><minimalPoint>100.0</minimalPoint><difficulty>EASY</difficulty><discipline><name>prog</name><lectureHours>10</lectureHours><practiceHours>10</practiceHours><labsCount>10</labsCount></discipline></labWorks><labWorks><id>8</id><name>lab1</name><coordinates><x>120</x><y>123.1</y></coordinates><creationDate>2025-04-20 22:20</creationDate><minimalPoint>100.0</minimalPoint><difficulty>EASY</difficulty><discipline><name>prog</name><lectureHours>12</lectureHours><practiceHours>10</practiceHours><labsCount>10</labsCount></discipline></labWorks></labWorks></Model>
+<Model xmlns="">
+    <creationDate>2025-03-24 08:48</creationDate>
+    <id>15</id>
+    <labWorks>
+        <labWorks>
+            <id>13</id>
+            <name>lab2</name>
+            <coordinates>
+                <x>100</x>
+                <y>100.0</y>
+            </coordinates>
+            <creationDate>2025-04-20 22:40</creationDate>
+            <minimalPoint>100.0</minimalPoint>
+            <difficulty>EASY</difficulty>
+            <discipline>
+                <name>rpog</name>
+                <lectureHours>120</lectureHours>
+                <practiceHours>120</practiceHours>
+                <labsCount>10</labsCount>
+            </discipline>
+        </labWorks>
+        <labWorks>
+            <id>14</id>
+            <name>lab2</name>
+            <coordinates>
+                <x>120</x>
+                <y>120.0</y>
+            </coordinates>
+            <creationDate>2025-04-20 22:57</creationDate>
+            <minimalPoint>100.0</minimalPoint>
+            <difficulty>EASY</difficulty>
+            <discipline>
+                <name>prog</name>
+                <lectureHours>10</lectureHours>
+                <practiceHours>10</practiceHours>
+                <labsCount>10</labsCount>
+            </discipline>
+        </labWorks>
+        <labWorks>
+            <id>8</id>
+            <name>lab1</name>
+            <coordinates>
+                <x>120</x>
+                <y>123.1</y>
+            </coordinates>
+            <creationDate>2025-04-20 22:20</creationDate>
+            <minimalPoint>100.0</minimalPoint>
+            <difficulty>EASY</difficulty>
+            <discipline>
+                <name>prog</name>
+                <lectureHours>12</lectureHours>
+                <practiceHours>10</practiceHours>
+                <labsCount>10</labsCount>
+            </discipline>
+        </labWorks>
+    </labWorks>
+</Model>

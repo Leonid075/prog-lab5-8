@@ -7,34 +7,31 @@ import ru.p3xi.labwork.LabWork;
 import ru.p3xi.labwork.LabWorkBuilder;
 
 /**
- * Удаляет эоементы, меньше заданного 
+ * Удаляет элементы, меньше заданного
  */
 public class RemoveLowerCommand extends Command {
     public RemoveLowerCommand() {
-        super("remove_lower", "Удалить из коллекции все элементы, меньшие, чем заданный",
-                new Object[] { new LabWork() }, "{element}");
+        super("remove_lower", "Удалить из коллекции все элементы, меньшие, чем заданный", "{element}");
     }
 
     @Override
-    public Object[] fillArgs(VirtualConsole con) throws FileEndException {
+    public CommandRequest fillArgs(VirtualConsole con, String[] args) throws FileEndException {
         LabWorkBuilder labWorkBuilder = new LabWorkBuilder();
         labWorkBuilder.buildInTerminal(con);
         try {
-            return new Object[] { new LabWork(labWorkBuilder) };
+            return new CommandRequest.Builder().command(args[0]).labWork(new LabWork(labWorkBuilder)).build();
         } catch (Exception e) {
-            return new Object[] {};
+            return null;
         }
     }
 
     @Override
-    public void execute(Model model, Object[] args) throws ArgsException {
-        LabWork labWork;
-        try {
-            labWork = (LabWork) args[0];
-        } catch (Exception e) {
+    public void execute(Model model, CommandRequest args) throws ArgsException {
+        if (args == null)
             throw new ArgsException("Неверные аргументы команды " + getName());
-        }
-        model.removeLower(labWork);
+        if (args.getLabWork() == null)
+            throw new ArgsException("Неверные аргументы команды " + getName());
+        model.removeLower(args.getLabWork());
         System.out.println("Удалены объекты меньше заданого (если они существовали)");
     }
 }

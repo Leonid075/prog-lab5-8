@@ -13,17 +13,22 @@ import ru.p3xi.labwork.*;
  */
 public class PrintDisciplineCommand extends Command {
     public PrintDisciplineCommand() {
-        super("print_field_descending_discipline", "Вывести значения discipline всех элементов в порядке убывания",
-                new Object[] {}, "");
+        super("print_field_descending_discipline", "Вывести значения discipline всех элементов в порядке убывания", "");
     }
 
     @Override
-    public Object[] fillArgs(VirtualConsole con) throws FileEndException {
-        return new Object[] {};
+    public CommandRequest fillArgs(VirtualConsole con, String[] args) throws FileEndException {
+        try {
+            return new CommandRequest.Builder().command(args[0]).build();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
-    public void execute(Model model, Object[] args) {
+    public void execute(Model model, CommandRequest args) throws ArgsException {
+        if (args == null)
+            throw new ArgsException("Неверные аргументы команды " + getName());
         if (model.getSize() == 0) {
             System.out.println("коллекция пуста");
             return;
