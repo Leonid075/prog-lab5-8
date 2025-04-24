@@ -18,20 +18,22 @@ public class Main {
 
             VirtualConsole con = new VirtualRealConsole();
 
-            Terminal terminal = new Terminal(new Command[] { new AddCommand(), 
+            Terminal terminal = new Terminal(new Command[] {
+                    new AddCommand(),
                     new AddIfMaxCommand(),
                     new AddIfMinCommand(),
-                    new AvarageMinPointCommand(), 
-                    new ClearCommand(), 
+                    new AvarageMinPointCommand(),
+                    new ClearCommand(),
                     new InfoCommand(),
-                    new PrintDisciplineCommand(), 
-                    new RemoveByDiffCommand(), 
+                    new PrintDisciplineCommand(),
+                    new RemoveByDiffCommand(),
                     new RemoveByIdCommand(),
-                    new RemoveByIdCommand(), 
-                    new RemoveLowerCommand(), 
-                    new SaveCommand(), 
+                    new RemoveByIdCommand(),
+                    new RemoveLowerCommand(),
+                    new SaveCommand(),
                     new ShowCommand(),
-                    new UpdateCommand() });
+                    new UpdateCommand(),
+            });
 
             terminal.execute(model, con);
         } catch (Exception e) {

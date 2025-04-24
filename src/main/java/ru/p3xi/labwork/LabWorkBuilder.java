@@ -143,7 +143,7 @@ public class LabWorkBuilder {
                 setDifficulty(Difficulty.valueOf(input));
                 break;
             } catch (IllegalArgumentException | ValueException e) {
-                System.out.println(e);
+                System.out.println("Доступны занчения VERY_EASY, EASY, HOPELESS");
             }
         }
         discipline.buildInTerminal(con);
