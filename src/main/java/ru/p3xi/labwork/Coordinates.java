@@ -2,6 +2,9 @@ package ru.p3xi.labwork;
 
 import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
+
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
@@ -43,7 +46,7 @@ public class Coordinates implements Showable {
     public static Coordinates buildInTerminal(VirtualConsole con) throws FileEndException {
         Builder builder = new Builder();
         Integer x;
-        Float y;
+        BigDecimal y;
         con.writeLine("| Введите координаты:");
         while (true) {
             try {
@@ -64,7 +67,7 @@ public class Coordinates implements Showable {
                 if (input.equals(""))
                     y = null;
                 else
-                    y = Float.parseFloat(input);
+                    y = new BigDecimal(input);
                 builder = builder.setY(y);
                 break;
             } catch (NumberFormatException | ValueException e) {
@@ -93,12 +96,12 @@ public class Coordinates implements Showable {
             return this;
         }
 
-        public Builder setY(Float y) throws ValueException {
+        public Builder setY(BigDecimal y) throws ValueException {
             if (y == null)
                 throw new ValueException("y не может быть null");
-            if (y > 721)
+            if (y.compareTo(new BigDecimal("721"))>0)
                 throw new ValueException("y должен быть не больше 721");
-            this.y = y;
+            this.y = Float.parseFloat(y.toString());
             return this;
         }
 
