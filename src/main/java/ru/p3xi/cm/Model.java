@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import ru.p3xi.file.FileContainer;
+import ru.p3xi.file.FileException;
 import ru.p3xi.labwork.*;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -29,6 +31,7 @@ public class Model {
     private LocalDateTime creationDate;
     /** Поле для создание новых id */
     private long id;
+    private FileContainer file;
 
     public Model() {
         labs = new TreeSet<LabWork>();
@@ -36,7 +39,8 @@ public class Model {
     }
 
     /**
-     * Получить все  лабораторные работы
+     * Получить все лабораторные работы
+     * 
      * @return
      */
     public ArrayList<LabWork> getLabWorks() {
@@ -63,6 +67,10 @@ public class Model {
         this.id = id;
     }
 
+    public void setFile(String filename) {
+        this.file = new FileContainer(filename);
+    }
+
     public long getId() {
         return id++;
     }
@@ -73,6 +81,7 @@ public class Model {
 
     /**
      * Добавить новую лабораторную работу
+     * 
      * @param labWork
      */
     public void add(LabWork labWork) {
@@ -82,6 +91,7 @@ public class Model {
 
     /**
      * Получить лабораторную работу по id
+     * 
      * @param id
      * @return
      */
@@ -95,6 +105,7 @@ public class Model {
 
     /**
      * Обновить лабораторную работу по id
+     * 
      * @param id
      * @param labWork
      * @return
@@ -118,6 +129,7 @@ public class Model {
 
     /**
      * Удалить лабораторную работу по id
+     * 
      * @param id
      */
     public void remove(long id) {
@@ -138,6 +150,7 @@ public class Model {
 
     /**
      * Удалить все лабораторные работы со сложностью diff
+     * 
      * @param diff
      */
     public void removeByDiff(Difficulty diff) {
@@ -151,6 +164,7 @@ public class Model {
 
     /**
      * Удалит все лабораторные работы, меньше данной
+     * 
      * @param exLabWork
      */
     public void removeLower(LabWork exLabWork) {
@@ -164,6 +178,7 @@ public class Model {
 
     /**
      * Добавить элемент в коллекцию, если он будет минимальным
+     * 
      * @param labWork
      * @return
      */
@@ -177,6 +192,7 @@ public class Model {
 
     /**
      * Добавить элемент в коллекцию, если он будет максимальным
+     * 
      * @param labWork
      * @return
      */
@@ -190,60 +206,53 @@ public class Model {
 
     /**
      * Сохранить коллекцию в файл
+     * 
      * @param filename
      */
     public void save(String filename) {
         FileWriter fw;
-        String fileContent;
+        String content;
 
         try {
             XmlMapper mapper = new XmlMapper();
             mapper.findAndRegisterModules();
-            fileContent = mapper.writeValueAsString(this);
+            content = mapper.writeValueAsString(this);
         } catch (Exception e) {
             System.out.println(e);
             return;
         }
         try {
-            fw = new FileWriter(filename, false);
-            fw.write(fileContent);
-            fw.flush();
-        } catch (IOException e) {
-            System.out.println(e);
-            return;
+            file.writeFile(content);
+        } catch (FileException e) {
+            System.out.println("Ошибка чтения файла");
         }
     }
 
     /**
      * Загрузить коллекцию из файла
+     * 
      * @param filename
      * @return
      */
     public static Model load(String filename) {
-        FileInputStream obj;
-        String fileContent;
+        String content;
         try {
-            obj = new FileInputStream(filename);
-        } catch (FileNotFoundException e) {
-            System.out.println("Файл не найден, создана новая пустая коллекция");
-            return new Model();
-        } catch (NullPointerException e) {
-            System.out.println("Файл не найден");
+            content = new FileContainer(filename).readFile();
+        } catch (FileException | NullPointerException e) {
+            System.out.println("Ошибка чтения файла");
             return null;
-        }
-        try {
-            fileContent = new String(new BufferedInputStream(obj).readAllBytes());
-        } catch (IOException e) {
-            System.out.println(e);
-            return new Model();
         }
         try {
             XmlMapper mapper = new XmlMapper();
             mapper.findAndRegisterModules();
-            return mapper.readValue(fileContent, Model.class);
+            Model model = mapper.readValue(content, Model.class);
+            model.setFile(filename);
+            return model;
         } catch (Exception e) {
             System.out.println("Не удалось правильно интрепретировать файл, используется новая коллекция");
-            return new Model();
+            Model model = new Model();
+            model.setFile(filename);
+            return model;
         }
     }
 }

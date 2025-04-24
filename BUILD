@@ -18,13 +18,13 @@ java_library(
 java_library(
     name = "cm",
     srcs = glob(["src/main/java/ru/p3xi/cm/*.java"]),
-    deps = [":labwork", ":jackson", ":jackson-dataformat", ":jackson-annotations",],
+    deps = [":labwork", ":jackson", ":jackson-dataformat", ":jackson-annotations", ":file",],
 )
 
 java_library(
     name = "console",
     srcs = glob(["src/main/java/ru/p3xi/console/*.java"]),
-    deps = [],
+    deps = [":file",],
 )
 
 java_library(
@@ -36,7 +36,13 @@ java_library(
 java_library(
     name = "commands",
     srcs = glob(["src/main/java/ru/p3xi/commands/*.java"]),
-    deps = [":labwork", ":cm", ":jackson", ":jackson-dataformat", ":console",],
+    deps = [":labwork", ":cm", ":jackson", ":jackson-dataformat", ":console", ":file",],
+)
+
+java_library(
+    name = "file",
+    srcs = glob(["src/main/java/ru/p3xi/file/*.java"]),
+    deps = [],
 )
 
 java_import(
