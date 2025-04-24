@@ -33,6 +33,22 @@ public class Main {
                     new SaveCommand(),
                     new ShowCommand(),
                     new UpdateCommand(),
+                    new ExecuteScriptCommand(new Command[] {
+                        new AddCommand(),
+                        new AddIfMaxCommand(),
+                        new AddIfMinCommand(),
+                        new AvarageMinPointCommand(),
+                        new ClearCommand(),
+                        new InfoCommand(),
+                        new PrintDisciplineCommand(),
+                        new RemoveByDiffCommand(),
+                        new RemoveByIdCommand(),
+                        new RemoveByIdCommand(),
+                        new RemoveLowerCommand(),
+                        new SaveCommand(),
+                        new ShowCommand(),
+                        new UpdateCommand(),
+                })
             });
 
             terminal.execute(model, con);
