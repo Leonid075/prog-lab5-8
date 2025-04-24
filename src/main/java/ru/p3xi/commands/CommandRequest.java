@@ -5,7 +5,7 @@ import ru.p3xi.labwork.LabWork;
 
 public class CommandRequest {
     private String command;
-    private LabWork labWork;
+    private LabWork.Builder labWork;
     private Long id;
     private Difficulty difficulty;
 
@@ -24,7 +24,7 @@ public class CommandRequest {
         return id;
     }
 
-    public LabWork getLabWork() {
+    public LabWork.Builder getLabWork() {
         return labWork;
     }
 
@@ -34,11 +34,11 @@ public class CommandRequest {
 
     public static class Builder {
         private String command;
-        private LabWork labWork;
+        private LabWork.Builder labWork;
         private Long id;
         private Difficulty difficulty;
 
-        public Builder labWork(LabWork labWork) {
+        public Builder labWork(LabWork.Builder labWork) {
             this.labWork = labWork;
             return this;
         }

@@ -1,19 +1,110 @@
 package ru.p3xi.labwork;
 
+import ru.p3xi.console.FileEndException;
+import ru.p3xi.console.VirtualConsole;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 /**
  * Класс координат
  */
-public class Coordinates extends CoordinatesBuilder implements Showable {
-    // private Integer x; // Максимальное значение поля: 970, Поле не может быть
-    // null
-    // private Float y; // Максимальное значение поля: 721, Поле не может быть null
+@JsonDeserialize(builder = Coordinates.Builder.class)
+public class Coordinates implements Showable {
+    private Integer x; // Максимальное значение поля: 970, Поле не может быть null
+    private Float y; // Максимальное значение поля: 721, Поле не может быть null
 
-    public Coordinates() {
+    Coordinates(Builder builder) {
+        setX(builder.x);
+        setY(builder.y);
     }
 
-    public Coordinates(CoordinatesBuilder cb) throws ValueException {
-        setX(cb.getX());
-        setY(cb.getY());
+    private void setX(Integer x) {
+        this.x = x;
+    }
+
+    private void setY(Float y) {
+        this.y = y;
+    }
+
+    public Integer getX() {
+        return x;
+    }
+
+    public Float getY() {
+        return y;
+    }
+
+    /**
+     * Заполнение элемента в консоли
+     * 
+     * @param con
+     * @throws FileEndException
+     */
+    public static Coordinates buildInTerminal(VirtualConsole con) throws FileEndException {
+        Builder builder = new Builder();
+        Integer x;
+        Float y;
+        con.writeLine("| Введите координаты:");
+        while (true) {
+            try {
+                String input = con.readLine("| | x (макс 970): ");
+                if (input.equals(""))
+                    x = null;
+                else
+                    x = Integer.parseInt(input);
+                builder = builder.setX(x);
+                break;
+            } catch (NumberFormatException | ValueException e) {
+                System.out.println(e);
+            }
+        }
+        while (true) {
+            try {
+                String input = con.readLine("| | y (макс 721): ");
+                if (input.equals(""))
+                    y = null;
+                else
+                    y = Float.parseFloat(input);
+                builder = builder.setY(y);
+                break;
+            } catch (NumberFormatException | ValueException e) {
+                System.out.println(e);
+            }
+        }
+        try {
+            return builder.build();
+        } catch (ValueException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "set")
+    public static class Builder {
+        private Integer x;
+        private Float y;
+
+        public Builder setX(Integer x) throws ValueException {
+            if (x == null)
+                throw new ValueException("x не может быть null");
+            if (x > 970)
+                throw new ValueException("x должен быть не больше 970");
+            this.x = x;
+            return this;
+        }
+
+        public Builder setY(Float y) throws ValueException {
+            if (y == null)
+                throw new ValueException("y не может быть null");
+            if (y > 721)
+                throw new ValueException("y должен быть не больше 721");
+            this.y = y;
+            return this;
+        }
+
+        public Coordinates build() throws ValueException {
+            return new Coordinates(this);
+        }
     }
 
     @Override

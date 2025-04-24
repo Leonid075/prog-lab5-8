@@ -4,7 +4,6 @@ import ru.p3xi.cm.Model;
 import ru.p3xi.console.FileEndException;
 import ru.p3xi.console.VirtualConsole;
 import ru.p3xi.labwork.LabWork;
-import ru.p3xi.labwork.LabWorkBuilder;
 
 /**
  * Обновление элемента коллекции по id
@@ -22,10 +21,8 @@ public class UpdateCommand extends Command {
         } catch (NumberFormatException e) {
             return null;
         }
-        LabWorkBuilder labWorkBuilder = new LabWorkBuilder();
-        labWorkBuilder.buildInTerminal(con);
         try {
-            return new CommandRequest.Builder().command(args[0]).id(id).labWork(new LabWork(labWorkBuilder)).build();
+            return new CommandRequest.Builder().command(args[0]).id(id).labWork(LabWork.buildInTerminal(con)).build();
         } catch (Exception e) {
             return null;
         }

@@ -41,6 +41,7 @@ public class CoordinatesBuilder {
 
     /**
      * Заполнение элемента в консоли
+     * 
      * @param con
      * @throws FileEndException
      */

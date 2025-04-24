@@ -1,28 +1,170 @@
 package ru.p3xi.labwork;
 
+import ru.p3xi.console.FileEndException;
+import ru.p3xi.console.VirtualConsole;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 /**
  * Класс предмета
  */
-public class Discipline extends DisciplineBuilder implements Showable {
-    // private String name; // Поле не может быть null, Строка не может быть пустой
-    // private long lectureHours;
-    // private Long practiceHours; // Поле не может быть null
-    // private Integer labsCount; // Поле может быть null
+@JsonDeserialize(builder = Discipline.Builder.class)
+public class Discipline implements Showable {
+    private String name; // Поле не может быть null, Строка не может быть пустой
+    private long lectureHours;
+    private Long practiceHours; // Поле не может быть null
+    private Integer labsCount; // Поле может быть null
 
-    public Discipline() {
+    public Discipline(Builder builder) {
+        setName(builder.name);
+        setLectureHours(builder.lectureHours);
+        setLabsCount(builder.labsCount);
+        setPracticeHours(builder.practiceHours);
     }
 
-    public Discipline(DisciplineBuilder db) throws ValueException {
-        setName(db.getName());
-        setLectureHours(db.getLectureHours());
-        setPracticeHours(db.getPracticeHours());
-        setLabsCount(db.getLabsCount());
+    private void setName(String name) {
+        this.name = name;
+    }
+
+    private void setLectureHours(long lectureHours) {
+        this.lectureHours = lectureHours;
+    }
+
+    private void setPracticeHours(Long practiceHours) {
+        this.practiceHours = practiceHours;
+    }
+
+    private void setLabsCount(Integer labsCount) {
+        this.labsCount = labsCount;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public long getLectureHours() {
+        return lectureHours;
+    }
+
+    public Long getPracticeHours() {
+        return practiceHours;
+    }
+
+    public Integer getLabsCount() {
+        return labsCount;
+    }
+
+    /**
+     * Заполнение элемента в консоли
+     * 
+     * @param con
+     * @throws FileEndException
+     */
+    public static Discipline buildInTerminal(VirtualConsole con) throws FileEndException {
+        Builder builder = new Builder();
+        Long lectureHours;
+        Long practiceHours;
+        Integer labsCount;
+        con.writeLine("| Введите дисциплину:");
+        while (true) {
+            try {
+                String input = con.readLine("| | name: ");
+                if (input.equals(""))
+                    input = null;
+                builder = builder.setName(input);
+                break;
+            } catch (NumberFormatException | ValueException e) {
+                System.out.println(e);
+            }
+        }
+        while (true) {
+            try {
+                String input = con.readLine("| | lectureHours: ");
+                if (input.equals(""))
+                    lectureHours = 0l;
+                else
+                    lectureHours = Long.parseLong(input);
+                builder = builder.setLectureHours(lectureHours.longValue());
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println(e);
+            }
+        }
+        while (true) {
+            try {
+                String input = con.readLine("| | practiceHours: ");
+                if (input.equals(""))
+                    practiceHours = null;
+                else
+                    practiceHours = Long.parseLong(input);
+                builder = builder.setPracticeHours(practiceHours);
+                break;
+            } catch (NumberFormatException | ValueException e) {
+                System.out.println(e);
+            }
+        }
+        while (true) {
+            try {
+                String input = con.readLine("| | labsCount: ");
+                if (input.equals(""))
+                    labsCount = null;
+                else
+                    labsCount = Integer.parseInt(input);
+                builder = builder.setLabsCount(labsCount);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println(e);
+            }
+        }
+        try {
+            return builder.build();
+        } catch (ValueException e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
+    @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "set")
+    public static class Builder {
+        private String name; // Поле не может быть null, Строка не может быть пустой
+        private long lectureHours;
+        private Long practiceHours; // Поле не может быть null
+        private Integer labsCount; // Поле может быть null
+
+        public Builder setName(String name) throws ValueException {
+            if (name == null)
+                throw new ValueException("name не может быть null");
+            this.name = name;
+            return this;
+        }
+
+        public Builder setLectureHours(long lectureHours) {
+            this.lectureHours = lectureHours;
+            return this;
+        }
+
+        public Builder setPracticeHours(Long practiceHours) throws ValueException {
+            if (practiceHours == null)
+                throw new ValueException("practiceHours не может быть null");
+            this.practiceHours = practiceHours;
+            return this;
+        }
+
+        public Builder setLabsCount(Integer labsCount) {
+            this.labsCount = labsCount;
+            return this;
+        }
+
+        public Discipline build() throws ValueException {
+            return new Discipline(this);
+        }
     }
 
     @Override
     public String toString() {
         return name + "_" + ((Long) lectureHours).toString() + "_" + practiceHours.toString() + "_"
-                + labsCount.toString();
+                + String.valueOf(labsCount);
     }
 
     @Override

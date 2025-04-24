@@ -84,9 +84,9 @@ public class Model {
      * 
      * @param labWork
      */
-    public void add(LabWork labWork) {
+    public void add(LabWork.Builder labWork) {
         labWork.setId(getId());
-        labs.add(labWork);
+        labs.add(labWork.build());
     }
 
     /**
@@ -110,19 +110,20 @@ public class Model {
      * @param labWork
      * @return
      */
-    public boolean update(long id, LabWorkBuilder labWork) {
+    public boolean update(long id, LabWork.Builder labWork) {
+        LabWork oldLabWork = null;
         for (LabWork labWorkNew : labs) {
             if (labWorkNew.getId() == id) {
-                try {
-                    labWorkNew.setName(labWork.getName());
-                    labWorkNew.setCoordinates(labWork.getCoordinates());
-                    labWorkNew.setMinimalPoint(labWork.getMinimalPoint());
-                    labWorkNew.setDifficulty(labWork.getDifficulty());
-                    labWorkNew.setDiscipline(labWork.getDiscipline());
-                } catch (Exception e) {
-                }
-                return true;
+                oldLabWork = labWorkNew;
             }
+        }
+        if (labWork == null)
+            return false;
+        try {
+            labs.remove(oldLabWork);
+            labs.add(labWork.setId(id).build());
+            return true;
+        } catch (Exception e) {
         }
         return false;
     }
@@ -249,6 +250,7 @@ public class Model {
             model.setFile(filename);
             return model;
         } catch (Exception e) {
+            System.out.println(e);
             System.out.println("Не удалось правильно интрепретировать файл, используется новая коллекция");
             Model model = new Model();
             model.setFile(filename);

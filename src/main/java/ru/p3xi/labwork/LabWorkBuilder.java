@@ -106,9 +106,9 @@ public class LabWorkBuilder {
      * @throws FileEndException
      */
     public void buildInTerminal(VirtualConsole con) throws FileEndException {
-        Coordinates coordinates = new Coordinates();
+        Coordinates coordinates;
         Float minimalPoint;
-        Discipline discipline = new Discipline();
+        Discipline discipline;
         con.writeLine("Введите лабораторную работу:");
         while (true) {
             try {
@@ -121,7 +121,7 @@ public class LabWorkBuilder {
                 System.out.println(e);
             }
         }
-        coordinates.buildInTerminal(con);
+        coordinates = Coordinates.buildInTerminal(con);
         while (true) {
             try {
                 String input = con.readLine("| minimalPoint: ");
@@ -146,7 +146,7 @@ public class LabWorkBuilder {
                 System.out.println("Доступны занчения VERY_EASY, EASY, HOPELESS");
             }
         }
-        discipline.buildInTerminal(con);
+        discipline = Discipline.buildInTerminal(con);
         try {
             setCoordinates(coordinates);
             setCreationDate(LocalDateTime.now());
