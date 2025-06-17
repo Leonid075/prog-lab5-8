@@ -29,6 +29,14 @@ public class ShowCommand extends Command {
         if (args == null)
             throw new ArgsException("Неверные аргументы команды " + getName());
         CommandResponce responce = net.SendRequest(args);
+        if (!responce.getIsOk()) {
+            System.out.println(responce.getResponce());
+            return;
+        }
+        if (responce.getLabWorks() == null || responce.getLabWorks().size() == 0) {
+            System.out.println("Коллекция пуста");
+            return;
+        }
         for (LabWork labWork : responce.getLabWorks()) {
             System.out.println(labWork.show());
         }

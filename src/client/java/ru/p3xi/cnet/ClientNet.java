@@ -1,24 +1,17 @@
 package ru.p3xi.cnet;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 
-import ru.p3xi.request.CommandRequest;
-import ru.p3xi.request.CommandResponce;
+import ru.p3xi.request.*;
 
 public class ClientNet {
-    ObjectOutputStream os;
-    ObjectInputStream is;
     private static final String host = "localhost";
     private static final int port = 6789;
-    private static final int bufferSize = 10240;
+    private static final int bufferSize = 65536;
     private DatagramChannel channel;
     private SocketAddress serverAddress;
 
@@ -32,26 +25,24 @@ public class ClientNet {
     }
 
     public CommandResponce SendRequest(CommandRequest request) {
-        ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
         try {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(bos);
-            oos.writeObject(request);
-            oos.flush();
+            byte[] serializedData = Serializer.serialize(request);
 
-            byte[] serializedData = bos.toByteArray();
+            if (serializedData.length > bufferSize) {
+                return new CommandResponce.Builder().isOk(false).responce("Запрос слишом длинный").build();
+            }
+
+            ByteBuffer buffer = ByteBuffer.allocate(serializedData.length);
 
             buffer.put(serializedData);
             buffer.flip();
 
             channel.send(buffer, serverAddress);
-            oos.close();
-            bos.close();
-            buffer.clear();
         } catch (IOException e) {
-            return new CommandResponce.Builder().build();
+            
         }
         try {
+            ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
             SocketAddress senderAddress = channel.receive(buffer);
             if (senderAddress != null) {
                 buffer.flip();
@@ -59,22 +50,14 @@ public class ClientNet {
                 buffer.get(data);
 
                 try {
-                    ByteArrayInputStream bis = new ByteArrayInputStream(data);
-                    ObjectInputStream ois = new ObjectInputStream(bis);
-                    Object receivedObject = ois.readObject();
-
-                    CommandResponce responce = (CommandResponce) receivedObject;
-
-                    ois.close();
-                    bis.close();
-                    return responce;
+                    return Serializer.deserialize(data);
                 } catch (Exception e) {
                     System.out.println(e);
                     return new CommandResponce.Builder().isOk(false).responce("Ошибка передачи").build();
                 }
             }
         } catch (IOException e) {
-            return new CommandResponce.Builder().isOk(false).responce("Ошибка передачи").build();
+
         }
         return new CommandResponce.Builder().isOk(false).responce("Ошибка передачи").build();
     }
