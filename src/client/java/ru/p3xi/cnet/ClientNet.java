@@ -51,8 +51,7 @@ public class ClientNet {
 
                 try {
                     return Serializer.deserialize(data);
-                } catch (Exception e) {
-                    System.out.println(e);
+                } catch (IOException|ClassNotFoundException e) {
                     return new CommandResponce.Builder().isOk(false).responce("Ошибка передачи").build();
                 }
             }

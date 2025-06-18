@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.TreeSet;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -35,10 +36,12 @@ public class Model {
     /** Поле для создание новых id */
     private long id;
     private FileContainer file;
+    private final ReentrantReadWriteLock lock;
 
     public Model() {
         labs = new TreeSet<LabWork>();
         creationDate = LocalDateTime.now();
+        lock = new ReentrantReadWriteLock();
     }
 
     /**
@@ -47,39 +50,79 @@ public class Model {
      * @return
      */
     public ArrayList<LabWork> getLabWorks() {
-        ArrayList<LabWork> all = new ArrayList<>();
-        for (LabWork labWork : labs) {
-            all.add(labWork);
+        lock.readLock().lock();
+        try{
+            ArrayList<LabWork> all = new ArrayList<>();
+            for (LabWork labWork : labs) {
+                all.add(labWork);
+            }
+            return all;
+        } finally {
+            lock.readLock().unlock();
         }
-        return all;
     }
 
     public LocalDateTime getCreationDate() {
-        return creationDate;
+        lock.readLock().lock();
+        try{
+            return creationDate;
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     public void setLabWorks(ArrayList<LabWork> labWorks) {
-        labs = new TreeSet<LabWork>(labWorks);
+        lock.writeLock().lock();
+        try{
+            labs = new TreeSet<LabWork>(labWorks);
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
+        lock.writeLock().lock();
+        try{
+            this.creationDate = creationDate;
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     public void setId(long id) {
-        this.id = id;
+        lock.writeLock().lock();
+        try{
+            this.id = id;
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     public void setFile(String filename) {
-        this.file = new FileContainer(filename);
+        lock.writeLock().lock();
+        try{
+            this.file = new FileContainer(filename);
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     public long getId() {
-        return id++;
+        lock.readLock().lock();
+        try{
+            return id++;
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     public int getSize() {
-        return labs.size();
+        lock.readLock().lock();
+        try{
+            return labs.size();
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     /**
@@ -88,8 +131,13 @@ public class Model {
      * @param labWork
      */
     public void add(LabWork.Builder labWork) {
-        labWork.setId(getId());
-        labs.add(labWork.build());
+        lock.writeLock().lock();
+        try{
+            labWork.setId(getId());
+            labs.add(labWork.build());
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     /**
@@ -99,7 +147,12 @@ public class Model {
      * @return
      */
     public LabWork getById(long id) {
-        return labs.stream().filter(x -> x.getId() == id).findAny().get();
+        lock.readLock().lock();
+        try{
+            return labs.stream().filter(x -> x.getId() == id).findAny().get();
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     /**
@@ -110,16 +163,21 @@ public class Model {
      * @return
      */
     public boolean update(long id, LabWork.Builder labWork) {
-        Optional<LabWork> oldLabWork = labs.stream().filter(x -> x.getId() == id).findAny();
-        if (labWork == null || oldLabWork == null)
+        lock.writeLock().lock();
+        try{
+            Optional<LabWork> oldLabWork = labs.stream().filter(x -> x.getId() == id).findAny();
+            if (labWork == null || oldLabWork == null)
+                return false;
+            try {
+                labs.remove(oldLabWork.get());
+                labs.add(labWork.setId(id).build());
+                return true;
+            } catch (Exception e) {
+            }
             return false;
-        try {
-            labs.remove(oldLabWork.get());
-            labs.add(labWork.setId(id).build());
-            return true;
-        } catch (Exception e) {
+        } finally {
+            lock.writeLock().unlock();
         }
-        return false;
     }
 
     /**
@@ -128,14 +186,24 @@ public class Model {
      * @param id
      */
     public void remove(long id) {
-        labs.remove(labs.stream().filter(x -> x.getId() == id).findAny().get());
+        lock.writeLock().lock();
+        try{
+            labs.remove(labs.stream().filter(x -> x.getId() == id).findAny().get());
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     /**
      * Очистить коллекцию
      */
     public void clear() {
-        labs.clear();
+        lock.writeLock().lock();
+        try{
+            labs.clear();
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     /**
@@ -144,10 +212,15 @@ public class Model {
      * @param diff
      */
     public void removeByDiff(Difficulty diff) {
-        labs = labs.stream()
+        lock.writeLock().lock();
+        try{
+            labs = labs.stream()
                 .filter(x -> x.getDifficulty()
                         .equals(diff))
                 .collect(Collectors.toCollection(() -> new TreeSet<LabWork>()));
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     /**
@@ -156,11 +229,16 @@ public class Model {
      * @param exLabWork
      */
     public void removeLower(LabWork exLabWork) {
-        while (true) {
-            LabWork labWork = labs.lower(exLabWork);
-            if (labWork == null)
-                break;
-            labs.remove(labWork);
+        lock.writeLock().lock();
+        try{
+            while (true) {
+                LabWork labWork = labs.lower(exLabWork);
+                if (labWork == null)
+                    break;
+                labs.remove(labWork);
+            }
+        } finally {
+            lock.writeLock().unlock();
         }
     }
 
@@ -171,11 +249,16 @@ public class Model {
      * @return
      */
     public boolean addIfMax(LabWork labWork) {
-        if (labs.higher(labWork) == null) {
-            labs.add(labWork);
-            return true;
-        } else
-            return false;
+        lock.writeLock().lock();
+        try{
+            if (labs.higher(labWork) == null) {
+                labs.add(labWork);
+                return true;
+            } else
+                return false;
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     /**
@@ -185,11 +268,16 @@ public class Model {
      * @return
      */
     public boolean addIfMin(LabWork labWork) {
-        if (labs.lower(labWork) == null) {
-            labs.add(labWork);
-            return true;
-        } else
-            return false;
+        lock.writeLock().lock();
+        try{
+            if (labs.lower(labWork) == null) {
+                labs.add(labWork);
+                return true;
+            } else
+                return false;
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     /**
@@ -198,21 +286,26 @@ public class Model {
      * @param filename
      */
     public void save(String filename) {
-        FileWriter fw;
-        String content;
+        lock.writeLock().lock();
+        try{
+            FileWriter fw;
+            String content;
 
-        try {
-            XmlMapper mapper = new XmlMapper();
-            mapper.findAndRegisterModules();
-            content = mapper.writeValueAsString(this);
-        } catch (Exception e) {
-            System.out.println(e);
-            return;
-        }
-        try {
-            file.writeFile(content);
-        } catch (FileException e) {
-            System.out.println("Ошибка чтения файла");
+            try {
+                XmlMapper mapper = new XmlMapper();
+                mapper.findAndRegisterModules();
+                content = mapper.writeValueAsString(this);
+            } catch (Exception e) {
+                System.out.println(e);
+                return;
+            }
+            try {
+                file.writeFile(content);
+            } catch (FileException e) {
+                System.out.println("Ошибка чтения файла");
+            }
+        } finally {
+            lock.writeLock().unlock();
         }
     }
 
