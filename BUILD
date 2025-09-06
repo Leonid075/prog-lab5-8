@@ -25,7 +25,7 @@ java_library(
 java_library(
     name = "client-commands",
     srcs = glob(["src/client/java/ru/p3xi/ccommands/*.java"]),
-    deps = [":labwork", ":cm", ":jackson", ":jackson-dataformat", ":console", ":file", ":request", "cnet"],
+    deps = [":labwork", ":cm", ":jackson", ":jackson-dataformat", ":console", ":file", ":request", ":cnet"],
 )
 
 # server
@@ -33,13 +33,13 @@ java_binary(
     name = "server",
     main_class = "Main",
     srcs = glob(["src/server/java/Main.java", "src/server/java/CommandProcessor.java"]),
-    deps = [":labwork", ":cm", ":server-commands", ":terminal", ":console", ":snet", ":request"],
+    deps = [":labwork", ":cm", ":server-commands", ":terminal", ":console", ":snet", ":request", ":sqlite-jdbc",],
 )
 
 java_library(
     name = "snet",
     srcs = glob(["src/server/java/ru/p3xi/snet/*.java"]),
-    deps = [":request"],
+    deps = [":request", ":cm", ":server-commands",],
 )
 
 java_library(
@@ -51,7 +51,7 @@ java_library(
 java_library(
     name = "server-commands",
     srcs = glob(["src/server/java/ru/p3xi/scommands/*.java"]),
-    deps = [":labwork", ":cm", ":jackson", ":jackson-dataformat", ":file", ":request", "snet"],
+    deps = [":labwork", ":cm", ":jackson", ":jackson-dataformat", ":file", ":request",],
 )
 
 # common
@@ -109,4 +109,9 @@ java_import(
     name = "jackson-dataformat",
     jars = ["src/common/java/jackson-dataformat-xml-2.16.1.jar",],
     deps = [":jackson-annotations", ":jackson-datatype", "jackson-core", "stax2-api"],
+)
+
+java_import (
+    name = "sqlite-jdbc",
+    jars = ["src/common/java/postgresql-42.6.2.jar",],
 )

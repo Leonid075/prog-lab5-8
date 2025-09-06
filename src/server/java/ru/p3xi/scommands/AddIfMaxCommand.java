@@ -1,6 +1,7 @@
 package ru.p3xi.scommands;
 
 import ru.p3xi.cm.Model;
+import ru.p3xi.labwork.LabWork;
 import ru.p3xi.request.CommandRequest;
 import ru.p3xi.request.CommandResponce;
 
@@ -20,7 +21,9 @@ public class AddIfMaxCommand extends Command {
             throw new ArgsException("Неверные аргументы команды " + getName());
         if (args.getLabWork() == null)
             throw new ArgsException("Неверные аргументы команды " + getName());
-        boolean res = model.addIfMax(args.getLabWork().setId(0).build());
+        LabWork.Builder labWork = args.getLabWork();
+        labWork.setOwner(args.getUsername());
+        boolean res = model.addIfMax(labWork);
         if (res)
             return new CommandResponce.Builder().isOk(true).responce("Объект добавлен в коллекцию").build();
         else

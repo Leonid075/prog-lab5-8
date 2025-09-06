@@ -1,47 +1,85 @@
 package ru.p3xi.cm;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.TreeSet;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
-import ru.p3xi.file.FileContainer;
-import ru.p3xi.file.FileException;
+
 import ru.p3xi.labwork.*;
-
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Класс модели коллекции, служит оболкой над ней
  */
-@JsonIgnoreProperties({ "size" })
 public class Model {
     /** Коллекция лабораторных работ */
     private TreeSet<LabWork> labs;
+    /** Словарь юзеров и паролей */
+    private HashMap<String, String> users;
     /** Время создания */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime creationDate;
-    /** Поле для создание новых id */
-    private long id;
-    private FileContainer file;
     private final ReentrantReadWriteLock lock;
+    private DBManager dbManager;
 
     public Model() {
         labs = new TreeSet<LabWork>();
+        users = new HashMap<>();
         creationDate = LocalDateTime.now();
         lock = new ReentrantReadWriteLock();
+        try {
+            dbManager = new DBManager();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public String SHA_512(String passwordToHash, String salt){
+    String generatedPassword = null;
+    try {
+        MessageDigest md = MessageDigest.getInstance("SHA-512");
+        md.update(salt.getBytes(StandardCharsets.UTF_8));
+        byte[] bytes = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i< bytes.length ;i++){
+            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        generatedPassword = sb.toString();
+    } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+    }
+    return generatedPassword;
+}
+
+
+    public void addUser(String username, String password) {
+        try {
+            dbManager.addUser(username, SHA_512(password, "salt"));
+            users.put(username, SHA_512(password, "salt"));
+        } catch (SQLException e) {}
+    }
+
+    public boolean userExist(String username) {
+        if (users.get(username) != null)
+            return true;
+        return false;
+    }
+
+    public boolean comparePassword(String username, String password) {
+        if (users.get(username) == null) return false;
+        if (users.get(username).equals(SHA_512(password, "salt")))
+            return true;
+        return false;
+    }
+
+    private void setUsers(HashMap<String, String> users) {
+        this.users = new HashMap<>(users);
     }
 
     /**
@@ -89,33 +127,6 @@ public class Model {
         }
     }
 
-    public void setId(long id) {
-        lock.writeLock().lock();
-        try{
-            this.id = id;
-        } finally {
-            lock.writeLock().unlock();
-        }
-    }
-
-    public void setFile(String filename) {
-        lock.writeLock().lock();
-        try{
-            this.file = new FileContainer(filename);
-        } finally {
-            lock.writeLock().unlock();
-        }
-    }
-
-    public long getId() {
-        lock.readLock().lock();
-        try{
-            return id++;
-        } finally {
-            lock.readLock().unlock();
-        }
-    }
-
     public int getSize() {
         lock.readLock().lock();
         try{
@@ -133,8 +144,11 @@ public class Model {
     public void add(LabWork.Builder labWork) {
         lock.writeLock().lock();
         try{
-            labWork.setId(getId());
+            Long id = dbManager.addLabWork(labWork.build());
+            labWork.setId(id);
             labs.add(labWork.build());
+        } catch (SQLException e) {
+            System.out.println(e);
         } finally {
             lock.writeLock().unlock();
         }
@@ -169,6 +183,7 @@ public class Model {
             if (labWork == null || oldLabWork == null)
                 return false;
             try {
+                dbManager.updateLabWork(labWork.setId(id).build());
                 labs.remove(oldLabWork.get());
                 labs.add(labWork.setId(id).build());
                 return true;
@@ -188,8 +203,9 @@ public class Model {
     public void remove(long id) {
         lock.writeLock().lock();
         try{
+            dbManager.deleteLabWork(id);
             labs.remove(labs.stream().filter(x -> x.getId() == id).findAny().get());
-        } finally {
+        } catch(SQLException e) {} finally {
             lock.writeLock().unlock();
         }
     }
@@ -197,10 +213,16 @@ public class Model {
     /**
      * Очистить коллекцию
      */
-    public void clear() {
+    public void clear(String username) {
         lock.writeLock().lock();
         try{
-            labs.clear();
+            try {
+                dbManager.deleteAllByOwner(username);
+                labs = labs.stream()
+                    .filter(x -> !x.getOwner()
+                            .equals(username))
+                    .collect(Collectors.toCollection(() -> new TreeSet<LabWork>()));
+            } catch (SQLException e) {}
         } finally {
             lock.writeLock().unlock();
         }
@@ -215,7 +237,7 @@ public class Model {
         lock.writeLock().lock();
         try{
             labs = labs.stream()
-                .filter(x -> x.getDifficulty()
+                .filter(x -> !x.getDifficulty()
                         .equals(diff))
                 .collect(Collectors.toCollection(() -> new TreeSet<LabWork>()));
         } finally {
@@ -235,7 +257,10 @@ public class Model {
                 LabWork labWork = labs.lower(exLabWork);
                 if (labWork == null)
                     break;
-                labs.remove(labWork);
+                try {
+                    dbManager.deleteLabWork(labWork.getId());
+                    labs.remove(labWork);
+                } catch (SQLException e) {}
             }
         } finally {
             lock.writeLock().unlock();
@@ -248,14 +273,17 @@ public class Model {
      * @param labWork
      * @return
      */
-    public boolean addIfMax(LabWork labWork) {
+    public boolean addIfMax(LabWork.Builder labWork) {
         lock.writeLock().lock();
         try{
-            if (labs.higher(labWork) == null) {
-                labs.add(labWork);
+            if (labs.higher(labWork.setId(0).build()) == null) {
+                Long id = dbManager.addLabWork(labWork.setId(0).build());
+                labs.add(labWork.setId(id).build());
                 return true;
             } else
                 return false;
+        } catch(SQLException e) {
+            return false;
         } finally {
             lock.writeLock().unlock();
         }
@@ -267,74 +295,31 @@ public class Model {
      * @param labWork
      * @return
      */
-    public boolean addIfMin(LabWork labWork) {
+    public boolean addIfMin(LabWork.Builder labWork) {
         lock.writeLock().lock();
         try{
-            if (labs.lower(labWork) == null) {
-                labs.add(labWork);
+            if (labs.lower(labWork.setId(0).build()) == null) {
+                Long id = dbManager.addLabWork(labWork.setId(0).build());
+                labs.add(labWork.setId(id).build());
                 return true;
             } else
                 return false;
+        } catch(SQLException e) {
+            return false;
         } finally {
             lock.writeLock().unlock();
         }
     }
 
-    /**
-     * Сохранить коллекцию в файл
-     * 
-     * @param filename
-     */
-    public void save(String filename) {
-        lock.writeLock().lock();
-        try{
-            FileWriter fw;
-            String content;
-
-            try {
-                XmlMapper mapper = new XmlMapper();
-                mapper.findAndRegisterModules();
-                content = mapper.writeValueAsString(this);
-            } catch (Exception e) {
-                System.out.println(e);
-                return;
-            }
-            try {
-                file.writeFile(content);
-            } catch (FileException e) {
-                System.out.println("Ошибка чтения файла");
-            }
-        } finally {
-            lock.writeLock().unlock();
-        }
-    }
-
-    /**
-     * Загрузить коллекцию из файла
-     * 
-     * @param filename
-     * @return
-     */
-    public static Model load(String filename) {
-        String content;
+    public static Model load() {
+        Model model = new Model();
+        model.setCreationDate(LocalDateTime.now());
         try {
-            content = new FileContainer(filename).readFile();
-        } catch (FileException | NullPointerException e) {
-            System.out.println("Ошибка чтения файла");
+            model.setUsers(model.dbManager.getUsers());
+            model.setLabWorks(model.dbManager.getLabWorks());
+        } catch (SQLException e) {
             return null;
         }
-        try {
-            XmlMapper mapper = new XmlMapper();
-            mapper.findAndRegisterModules();
-            Model model = mapper.readValue(content, Model.class);
-            model.setFile(filename);
-            return model;
-        } catch (Exception e) {
-            System.out.println(e);
-            System.out.println("Не удалось правильно интрепретировать файл, используется новая коллекция");
-            Model model = new Model();
-            model.setFile(filename);
-            return model;
-        }
+        return model;
     }
 }

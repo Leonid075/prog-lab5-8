@@ -6,6 +6,8 @@ import ru.p3xi.labwork.Difficulty;
 import ru.p3xi.labwork.LabWork;
 
 public class CommandRequest implements Serializable {
+    private String username;
+    private String password;
     private String command;
     private LabWork.Builder labWork;
     private Long id;
@@ -16,6 +18,22 @@ public class CommandRequest implements Serializable {
         this.labWork = builder.labWork;
         this.id = builder.id;
         this.difficulty = builder.difficulty;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getCommand() {

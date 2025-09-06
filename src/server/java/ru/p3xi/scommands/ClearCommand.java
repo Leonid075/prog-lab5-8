@@ -16,7 +16,7 @@ public class ClearCommand extends Command {
     public CommandResponce execute(Model model, CommandRequest args) throws ArgsException {
         if (args == null)
             throw new ArgsException("Неверные аргументы команды " + getName());
-        model.clear();
+        model.clear(args.getUsername());
         return new CommandResponce.Builder().isOk(true).responce("Коллекция очищена").build();
     }
 }

@@ -1,1 +1,1 @@
-<Model xmlns=""><creationDate>2025-06-08 12:24</creationDate><id>0</id><labWorks></labWorks></Model>
+<Model xmlns=""><creationDate>2025-06-08 12:24</creationDate><id>1</id><labWorks><labWorks><id>0</id><name>test</name><coordinates><x>900</x><y>1.0</y></coordinates><creationDate>2025-09-03 19:55</creationDate><minimalPoint>1.0</minimalPoint><difficulty>EASY</difficulty><discipline><name>prog</name><lectureHours>10</lectureHours><practiceHours>10</practiceHours><labsCount>10</labsCount></discipline><owner>leon</owner></labWorks></labWorks></Model>

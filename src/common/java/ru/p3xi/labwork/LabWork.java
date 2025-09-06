@@ -37,6 +37,7 @@ public class LabWork implements Comparable<LabWork>, Showable, Serializable {
     protected Difficulty difficulty;
     /** Поле может быть null */
     protected Discipline discipline;
+    protected String owner;
 
     public LabWork(Builder builder) {
         setId(builder.id);
@@ -46,6 +47,7 @@ public class LabWork implements Comparable<LabWork>, Showable, Serializable {
         setMinimalPoint(builder.minimalPoint);
         setDifficulty(builder.difficulty);
         setDiscipline(builder.discipline);
+        setOwner(builder.owner);
     }
 
     private void setId(long id) {
@@ -76,6 +78,10 @@ public class LabWork implements Comparable<LabWork>, Showable, Serializable {
         this.discipline = discipline;
     }
 
+    private void setOwner(String owner) {
+        this.owner = owner;
+    }
+
     public long getId() {
         return id;
     }
@@ -104,6 +110,10 @@ public class LabWork implements Comparable<LabWork>, Showable, Serializable {
         return discipline;
     }
 
+    public String getOwner() {
+        return owner;
+    }
+
     @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "set")
     public static class Builder implements Serializable {
         private long id;
@@ -114,6 +124,7 @@ public class LabWork implements Comparable<LabWork>, Showable, Serializable {
         private float minimalPoint;
         private Difficulty difficulty;
         private Discipline discipline;
+        private String owner;
 
         public Builder setId(long id) {
             this.id = id;
@@ -161,6 +172,11 @@ public class LabWork implements Comparable<LabWork>, Showable, Serializable {
             if (discipline == null)
                 throw new ValueException("discipline не может быть null");
             this.discipline = discipline;
+            return this;
+        }
+
+        public Builder setOwner(String owner) {
+            this.owner = owner;
             return this;
         }
 

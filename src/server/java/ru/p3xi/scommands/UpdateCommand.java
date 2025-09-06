@@ -1,6 +1,7 @@
 package ru.p3xi.scommands;
 
 import ru.p3xi.cm.Model;
+import ru.p3xi.labwork.LabWork;
 import ru.p3xi.request.CommandRequest;
 import ru.p3xi.request.CommandResponce;
 
@@ -20,7 +21,12 @@ public class UpdateCommand extends Command {
             throw new ArgsException("Неверные аргументы команды " + getName());
         if (args.getLabWork() == null)
             throw new ArgsException("Неверные аргументы команды " + getName());
-        model.update(args.getId(), args.getLabWork());
+        if (!model.getById(args.getId()).getOwner().equals(args.getUsername()))
+            return new CommandResponce.Builder().isOk(false)
+                .responce("Вы не можете изменить чужой объект").build();
+        LabWork.Builder labWork = args.getLabWork();
+        labWork.setOwner(args.getUsername());
+        model.update(args.getId(), labWork);
         return new CommandResponce.Builder().isOk(true)
                 .responce("Обновлено значение объекта с id " + args.getId()).build();
     }

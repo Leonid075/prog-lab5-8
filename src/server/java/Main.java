@@ -6,15 +6,7 @@ import ru.p3xi.snet.ServerNet;
 
 public class Main {
     public static void main(String[] args) {
-
-        String var = System.getenv("lab5");
-        if (var == null) {
-            System.out.println("Переменая окружения 'lab5' не задана");
-            return;
-        }
-        Model model = Model.load(var);
-        if (model == null)
-            return;
+        Model model = Model.load();
 
         Command[] commands = new Command[] {
                 new AddCommand(),
@@ -29,11 +21,13 @@ public class Main {
                 new RemoveByIdCommand(),
                 new RemoveLowerCommand(),
                 new ShowCommand(),
-                new UpdateCommand()
+                new UpdateCommand(),
+                new CheckUserCommand(),
+                new RegisterCommand()
         };
         try {
             ServerNet net = new ServerNet();
-            new CommandProcessor(commands, var).execute(model, net);
+            new CommandProcessor(commands).execute(model, net);
         } catch (IOException e) {
             System.out.println(e);
         }

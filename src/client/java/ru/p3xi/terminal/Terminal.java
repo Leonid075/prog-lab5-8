@@ -5,12 +5,16 @@ import java.util.HashMap;
 import ru.p3xi.cnet.ClientNet;
 import ru.p3xi.console.*;
 import ru.p3xi.request.CommandRequest;
+import ru.p3xi.request.CommandResponce;
 import ru.p3xi.ccommands.*;
 
 /**
  * Класс терминала, для обработки пользовательского ввода
  */
 public class Terminal {
+    private String username;
+    private String password;
+
     /** Словарь команд */
     HashMap<String, Command> commands = new HashMap<>();
 
@@ -27,6 +31,38 @@ public class Terminal {
      * @param con
      */
     public void execute(ClientNet net, VirtualConsole con) {
+        try {
+            CommandRequest checkUserCommand = new CheckUserCommand().fillArgs(con, new String[] { "check_user" });
+            CommandRequest registerCommand = new RegisterCommand().fillArgs(con, new String[] { "register" });
+            while (true) {
+                username = con.readLine("Введите имя пользователя: ");
+                password = con.readLine("Введите пароль (если требуется): ");
+                checkUserCommand.setUsername(username);
+                checkUserCommand.setPassword(password);
+                CommandResponce responce = net.SendRequest(checkUserCommand);
+                System.out.println(responce.getResponce());
+                if (responce.getIsOk()) {
+                    break;
+                } else {
+                    if (responce.getResponce().equals("Неверный пароль")) {
+                        return;
+                    } else {
+                        String ans = con.readLine("Пользователь не найден. Зарегистрировать? [д/Н]: ");
+                        if (ans.equals("д") || ans.equals("да") || ans.equals("Д") || ans.equals("Да")
+                                || ans.equals("ДА")) {
+                            registerCommand.setUsername(username);
+                            registerCommand.setPassword(password);
+                            if (net.SendRequest(registerCommand).getIsOk()) {
+                                break;
+                            } else
+                                return;
+                        }
+                    }
+                }
+            }
+        } catch (FileEndException e) {
+            return;
+        }
         while (true) {
             String[] args = new String[] {};
             try {
@@ -56,6 +92,9 @@ public class Terminal {
                 }
                 try {
                     CommandRequest request = executed.fillArgs(con, args);
+                    request.setUsername(username);
+                    request.setPassword(password);
+
                     executed.execute(net, request);
                 } catch (FileEndException | ArgsException e) {
                     System.out.println(e);
