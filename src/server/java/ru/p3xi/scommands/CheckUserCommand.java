@@ -18,13 +18,12 @@ public class CheckUserCommand extends Command {
             throw new ArgsException("Неверные аргументы команды " + getName());
         boolean exists = model.userExist(args.getUsername());
         if (exists) {
-            if(model.comparePassword(args.getUsername(), args.getPassword())) {
+            if (model.comparePassword(args.getUsername(), args.getPassword())) {
                 return new CommandResponce.Builder().isOk(true).responce("Пользователь существует").build();
             } else {
                 return new CommandResponce.Builder().isOk(false).responce("Неверный пароль").build();
             }
-        }
-        else
+        } else
             return new CommandResponce.Builder().isOk(false).responce("Пользователь не существует").build();
     }
 }

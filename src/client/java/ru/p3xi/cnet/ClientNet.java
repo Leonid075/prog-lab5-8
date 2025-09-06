@@ -39,7 +39,7 @@ public class ClientNet {
 
             channel.send(buffer, serverAddress);
         } catch (IOException e) {
-            
+
         }
         try {
             ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
@@ -51,7 +51,7 @@ public class ClientNet {
 
                 try {
                     return Serializer.deserialize(data);
-                } catch (IOException|ClassNotFoundException e) {
+                } catch (IOException | ClassNotFoundException e) {
                     return new CommandResponce.Builder().isOk(false).responce("Ошибка передачи").build();
                 }
             }

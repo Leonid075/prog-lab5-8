@@ -21,6 +21,6 @@ public class CheckUserCommand extends Command {
 
     @Override
     public void execute(ClientNet net, CommandRequest args) throws ArgsException {
-        
+
     }
 }

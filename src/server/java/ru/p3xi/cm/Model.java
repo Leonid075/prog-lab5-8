@@ -12,7 +12,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-
 import ru.p3xi.labwork.*;
 
 /**
@@ -40,42 +39,56 @@ public class Model {
         }
     }
 
-    public String SHA_512(String passwordToHash, String salt){
-    String generatedPassword = null;
-    try {
-        MessageDigest md = MessageDigest.getInstance("SHA-512");
-        md.update(salt.getBytes(StandardCharsets.UTF_8));
-        byte[] bytes = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
-        StringBuilder sb = new StringBuilder();
-        for(int i=0; i< bytes.length ;i++){
-            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+    public String SHA_512(String passwordToHash, String salt) {
+        String generatedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            md.update(salt.getBytes(StandardCharsets.UTF_8));
+            byte[] bytes = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            generatedPassword = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
-        generatedPassword = sb.toString();
-    } catch (NoSuchAlgorithmException e) {
-        e.printStackTrace();
+        return generatedPassword;
     }
-    return generatedPassword;
-}
-
 
     public void addUser(String username, String password) {
+        lock.readLock().lock();
         try {
             dbManager.addUser(username, SHA_512(password, "salt"));
             users.put(username, SHA_512(password, "salt"));
-        } catch (SQLException e) {}
+        } catch (SQLException e) {
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     public boolean userExist(String username) {
-        if (users.get(username) != null)
-            return true;
-        return false;
+        lock.readLock().lock();
+        try {
+            if (users.get(username) != null)
+                return true;
+            return false;
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     public boolean comparePassword(String username, String password) {
-        if (users.get(username) == null) return false;
-        if (users.get(username).equals(SHA_512(password, "salt")))
-            return true;
-        return false;
+        lock.readLock().lock();
+        try {
+            if (users.get(username) == null)
+                return false;
+            if (users.get(username).equals(SHA_512(password, "salt")))
+                return true;
+            return false;
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     private void setUsers(HashMap<String, String> users) {
@@ -89,7 +102,7 @@ public class Model {
      */
     public ArrayList<LabWork> getLabWorks() {
         lock.readLock().lock();
-        try{
+        try {
             ArrayList<LabWork> all = new ArrayList<>();
             for (LabWork labWork : labs) {
                 all.add(labWork);
@@ -102,7 +115,7 @@ public class Model {
 
     public LocalDateTime getCreationDate() {
         lock.readLock().lock();
-        try{
+        try {
             return creationDate;
         } finally {
             lock.readLock().unlock();
@@ -111,7 +124,7 @@ public class Model {
 
     public void setLabWorks(ArrayList<LabWork> labWorks) {
         lock.writeLock().lock();
-        try{
+        try {
             labs = new TreeSet<LabWork>(labWorks);
         } finally {
             lock.writeLock().unlock();
@@ -120,7 +133,7 @@ public class Model {
 
     public void setCreationDate(LocalDateTime creationDate) {
         lock.writeLock().lock();
-        try{
+        try {
             this.creationDate = creationDate;
         } finally {
             lock.writeLock().unlock();
@@ -129,7 +142,7 @@ public class Model {
 
     public int getSize() {
         lock.readLock().lock();
-        try{
+        try {
             return labs.size();
         } finally {
             lock.readLock().unlock();
@@ -143,7 +156,7 @@ public class Model {
      */
     public void add(LabWork.Builder labWork) {
         lock.writeLock().lock();
-        try{
+        try {
             Long id = dbManager.addLabWork(labWork.build());
             labWork.setId(id);
             labs.add(labWork.build());
@@ -162,7 +175,7 @@ public class Model {
      */
     public LabWork getById(long id) {
         lock.readLock().lock();
-        try{
+        try {
             return labs.stream().filter(x -> x.getId() == id).findAny().get();
         } finally {
             lock.readLock().unlock();
@@ -178,7 +191,7 @@ public class Model {
      */
     public boolean update(long id, LabWork.Builder labWork) {
         lock.writeLock().lock();
-        try{
+        try {
             Optional<LabWork> oldLabWork = labs.stream().filter(x -> x.getId() == id).findAny();
             if (labWork == null || oldLabWork == null)
                 return false;
@@ -202,10 +215,11 @@ public class Model {
      */
     public void remove(long id) {
         lock.writeLock().lock();
-        try{
+        try {
             dbManager.deleteLabWork(id);
             labs.remove(labs.stream().filter(x -> x.getId() == id).findAny().get());
-        } catch(SQLException e) {} finally {
+        } catch (SQLException e) {
+        } finally {
             lock.writeLock().unlock();
         }
     }
@@ -215,14 +229,15 @@ public class Model {
      */
     public void clear(String username) {
         lock.writeLock().lock();
-        try{
+        try {
             try {
                 dbManager.deleteAllByOwner(username);
                 labs = labs.stream()
-                    .filter(x -> !x.getOwner()
-                            .equals(username))
-                    .collect(Collectors.toCollection(() -> new TreeSet<LabWork>()));
-            } catch (SQLException e) {}
+                        .filter(x -> !x.getOwner()
+                                .equals(username))
+                        .collect(Collectors.toCollection(() -> new TreeSet<LabWork>()));
+            } catch (SQLException e) {
+            }
         } finally {
             lock.writeLock().unlock();
         }
@@ -235,11 +250,11 @@ public class Model {
      */
     public void removeByDiff(Difficulty diff) {
         lock.writeLock().lock();
-        try{
+        try {
             labs = labs.stream()
-                .filter(x -> !x.getDifficulty()
-                        .equals(diff))
-                .collect(Collectors.toCollection(() -> new TreeSet<LabWork>()));
+                    .filter(x -> !x.getDifficulty()
+                            .equals(diff))
+                    .collect(Collectors.toCollection(() -> new TreeSet<LabWork>()));
         } finally {
             lock.writeLock().unlock();
         }
@@ -252,7 +267,7 @@ public class Model {
      */
     public void removeLower(LabWork exLabWork) {
         lock.writeLock().lock();
-        try{
+        try {
             while (true) {
                 LabWork labWork = labs.lower(exLabWork);
                 if (labWork == null)
@@ -260,7 +275,8 @@ public class Model {
                 try {
                     dbManager.deleteLabWork(labWork.getId());
                     labs.remove(labWork);
-                } catch (SQLException e) {}
+                } catch (SQLException e) {
+                }
             }
         } finally {
             lock.writeLock().unlock();
@@ -275,14 +291,14 @@ public class Model {
      */
     public boolean addIfMax(LabWork.Builder labWork) {
         lock.writeLock().lock();
-        try{
+        try {
             if (labs.higher(labWork.setId(0).build()) == null) {
                 Long id = dbManager.addLabWork(labWork.setId(0).build());
                 labs.add(labWork.setId(id).build());
                 return true;
             } else
                 return false;
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             return false;
         } finally {
             lock.writeLock().unlock();
@@ -297,14 +313,14 @@ public class Model {
      */
     public boolean addIfMin(LabWork.Builder labWork) {
         lock.writeLock().lock();
-        try{
+        try {
             if (labs.lower(labWork.setId(0).build()) == null) {
                 Long id = dbManager.addLabWork(labWork.setId(0).build());
                 labs.add(labWork.setId(id).build());
                 return true;
             } else
                 return false;
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             return false;
         } finally {
             lock.writeLock().unlock();
